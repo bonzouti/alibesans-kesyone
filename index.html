@@ -1,0 +1,964 @@
+<!doctype html>
+<html lang="ht">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kesyonè ALIBESANS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&display=swap">
+<style>
+/* Mise en page : une colonne de lecture, sections numérotées (c'est un vrai parcours), barre d'actions collée en bas */
+:root {
+  --bg: #f4f5fa;
+  --surface: #ffffff;
+  --ink: #1b2140;
+  --muted: #565d7d;
+  --line: #dde0ec;
+  --accent: #b8650f;
+  --accent-soft: #fbefe0;
+  --focus: #2f4fd8;
+  --ok: #1f7a4d;
+  --warn: #9a5b00;
+  --font-display: "Bricolage Grotesque", "Avenir Next", "Segoe UI", system-ui, sans-serif;
+  --font-body: "Atkinson Hyperlegible", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --step--1: 0.875rem;
+  --step-0: 1rem;
+  --step-1: 1.2rem;
+  --step-2: 1.55rem;
+  --step-3: 2.1rem;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #11142a; --surface: #191d39; --ink: #eceefa; --muted: #a4a9c8; --line: #2c3158;
+    --accent: #f0ac52; --accent-soft: #2e2618; --focus: #8ea3ff; --ok: #5fcf96; --warn: #f0ac52;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #11142a; --surface: #191d39; --ink: #eceefa; --muted: #a4a9c8; --line: #2c3158;
+  --accent: #f0ac52; --accent-soft: #2e2618; --focus: #8ea3ff; --ok: #5fcf96; --warn: #f0ac52;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body {
+  background: var(--bg); color: var(--ink);
+  font-family: var(--font-body); font-size: var(--step-0); line-height: 1.55;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 0 120px;
+}
+.wrap { max-width: 720px; margin: 0 auto; }
+header.top { padding-block: 40px 24px; display: grid; gap: 14px; }
+.topbar { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
+.eyebrow { font-size: var(--step--1); letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); font-weight: 700; }
+h1 { font-family: var(--font-display); font-weight: 700; font-size: var(--step-3); line-height: 1.1; margin: 0; text-wrap: balance; }
+h1 .motto { display: block; font-size: var(--step-1); font-weight: 500; color: var(--accent); margin-top: 8px; }
+.intro { color: var(--muted); max-width: 62ch; margin: 0; }
+.intro strong { color: var(--ink); }
+.lang { display: inline-flex; border: 1px solid var(--line); border-radius: 999px; overflow: hidden; background: var(--surface); }
+.lang button { border: 0; background: transparent; color: var(--muted); font: inherit; font-size: var(--step--1); font-weight: 700; padding: 6px 14px; cursor: pointer; }
+.lang button[aria-pressed="true"] { background: var(--ink); color: var(--bg); }
+.notice { border: 1px solid var(--line); background: var(--surface); border-radius: 10px; padding: 14px 16px; font-size: var(--step--1); color: var(--muted); }
+.notice b { color: var(--ink); }
+.progress { display: flex; gap: 4px; margin-top: 4px; }
+.progress span { flex: 1; height: 5px; border-radius: 3px; background: var(--line); }
+.progress span.done { background: var(--accent); }
+.progress-label { font-size: var(--step--1); color: var(--muted); }
+
+section.block { padding-block: 28px; border-top: 1px solid var(--line); display: grid; gap: 22px; }
+.block-head { display: grid; grid-template-columns: auto 1fr; gap: 4px 14px; align-items: baseline; }
+.block-num { font-family: var(--font-display); font-weight: 700; font-size: var(--step-2); color: var(--accent); font-variant-numeric: tabular-nums; grid-row: span 2; }
+.block-head h2 { font-family: var(--font-display); font-weight: 700; font-size: var(--step-2); margin: 0; line-height: 1.2; text-wrap: balance; }
+.block-head p { margin: 0; color: var(--muted); grid-column: 2; min-width: 0; }
+
+.q { display: grid; gap: 8px; min-width: 0; }
+.q > label, .q > .legend { font-weight: 700; }
+.q .help { font-size: var(--step--1); color: var(--muted); margin-top: -4px; }
+.q .req { color: var(--accent); margin-left: 4px; }
+input[type="text"], input[type="email"], input[type="tel"], input[type="date"], textarea, select {
+  width: 100%; font: inherit; color: var(--ink); background: var(--surface);
+  border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px;
+}
+textarea { min-height: 96px; resize: vertical; }
+input:focus-visible, textarea:focus-visible, select:focus-visible, button:focus-visible, .opt input:focus-visible + span {
+  outline: 2px solid var(--focus); outline-offset: 2px;
+}
+.opts { display: grid; gap: 8px; }
+.opts.cols { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); }
+.opt { display: flex; gap: 10px; align-items: flex-start; padding: 10px 12px; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); cursor: pointer; min-width: 0; }
+.opt input { margin-top: 4px; accent-color: var(--accent); flex: none; }
+.opt span { min-width: 0; }
+.opt:has(input:checked) { border-color: var(--accent); background: var(--accent-soft); }
+.opt small { display: block; color: var(--muted); font-size: var(--step--1); }
+.other { margin-top: 2px; }
+.phases { display: grid; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); }
+.phase-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 8px 14px; align-items: center; padding: 10px 12px; border-top: 1px solid var(--line); }
+.phase-row:first-child { border-top: 0; }
+.phase-name { min-width: 0; }
+.seg { display: inline-flex; border: 1px solid var(--line); border-radius: 999px; overflow: hidden; }
+.seg label { position: relative; cursor: pointer; }
+.seg input { position: absolute; opacity: 0; inset: 0; margin: 0; cursor: pointer; }
+.seg span { display: block; padding: 6px 12px; font-size: var(--step--1); font-weight: 700; color: var(--muted); white-space: nowrap; border-left: 1px solid var(--line); }
+.seg label:first-child span { border-left: 0; }
+.seg input:focus-visible + span { outline: 2px solid var(--focus); outline-offset: -2px; }
+.seg .seg-now input:checked + span { background: var(--accent); color: var(--surface); }
+.seg .seg-later input:checked + span { background: var(--accent-soft); color: var(--ink); }
+.seg .seg-no input:checked + span { background: var(--line); color: var(--ink); }
+@media (max-width: 560px) {
+  .phase-row { grid-template-columns: minmax(0, 1fr); }
+  .seg { display: flex; }
+  .seg label { flex: 1; text-align: center; }
+}
+
+.actions {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 5;
+  background: var(--surface); border-top: 1px solid var(--line);
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-top: 12px; padding-bottom: calc(12px + env(safe-area-inset-bottom, 0px));
+}
+.actions .inner { max-width: 720px; margin: 0 auto; display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+.status { flex: 1 1 200px; font-size: var(--step--1); color: var(--muted); min-width: 0; }
+.status.ok { color: var(--ok); }
+.status.warn { color: var(--warn); }
+.btn { font: inherit; font-weight: 700; border-radius: 8px; padding: 10px 16px; cursor: pointer; border: 1px solid var(--line); background: var(--surface); color: var(--ink); }
+.btn.primary { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+.btn:disabled { opacity: 0.5; cursor: default; }
+
+.owner { border: 1px solid var(--accent); border-radius: 12px; padding: 18px; background: var(--surface); display: grid; gap: 12px; margin-bottom: 8px; }
+.owner[hidden] { display: none; }
+.owner h2 { font-family: var(--font-display); font-size: var(--step-1); margin: 0; }
+.owner .row { display: flex; gap: 10px; align-items: center; justify-content: space-between; flex-wrap: wrap; padding: 10px 0; border-top: 1px solid var(--line); }
+.owner .row .who { min-width: 0; }
+.owner .row .meta { font-size: var(--step--1); color: var(--muted); }
+.pill { display: inline-block; font-size: 0.75rem; font-weight: 700; padding: 2px 8px; border-radius: 999px; border: 1px solid currentColor; }
+.pill.sent { color: var(--ok); }
+.pill.draft { color: var(--warn); }
+.owner pre { white-space: pre-wrap; font: inherit; font-size: var(--step--1); background: var(--bg); border-radius: 8px; padding: 12px; margin: 0; max-height: 420px; overflow: auto; }
+
+@media (prefers-reduced-motion: no-preference) {
+  .opt { transition: border-color 120ms, background-color 120ms; }
+}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header class="top">
+    <div class="topbar">
+      <span class="eyebrow" data-t="eyebrow"></span>
+      <div class="lang" role="group" aria-label="Lang / Langue">
+        <button type="button" id="lang-ht" data-lang="ht" aria-pressed="true">Kreyòl</button>
+        <button type="button" id="lang-fr" data-lang="fr" aria-pressed="false">Français</button>
+      </div>
+    </div>
+    <h1><span data-t="title"></span><span class="motto">LibEsans · Devlope. Enspire. Transfòme.</span></h1>
+    <p class="intro" data-t="intro" data-html></p>
+    <div class="notice" id="mode-notice" data-t="notice-copy" data-html></div>
+    <div>
+      <div class="progress" id="progress" aria-hidden="true"></div>
+      <div class="progress-label" id="progress-label"></div>
+    </div>
+  </header>
+
+  <div id="owner" class="owner" hidden></div>
+
+  <form id="form" novalidate></form>
+</div>
+
+<div class="actions">
+  <div class="inner">
+    <div class="status" id="status" role="status" aria-live="polite"></div>
+    <button type="button" class="btn" id="btn-copy"></button>
+    <button type="button" class="btn" id="btn-save" hidden></button>
+    <button type="button" class="btn primary" id="btn-send" hidden></button>
+  </div>
+</div>
+
+<script>
+(() => {
+  "use strict";
+
+  const UI = {
+    eyebrow: { ht: "Asosyasyon LibEsans · Pwojè sit entènèt", fr: "Association LibEsans · Projet de site web" },
+    title: { ht: "Kesyonè pou prepare sit entènèt la", fr: "Questionnaire de préparation du site web" },
+    intro: {
+      ht: "Repons ou yo ap pèmèt nou konprann pwojè a anvan nou kòmanse, wè difikilte yo davans, epi prepare yon pwopozisyon ak yon bidjè ki koresponn ak bezwen reyèl asosyasyon an. <strong>Kontè 20 a 30 minit.</strong> Pa gen move repons: si ou pa konnen, chwazi « Pa konnen » oswa kite l vid.",
+      fr: "Vos réponses nous permettent de comprendre le projet avant de commencer, d'anticiper les difficultés et de préparer une proposition et un budget adaptés aux besoins réels de l'association. <strong>Comptez 20 à 30 minutes.</strong> Il n'y a pas de mauvaise réponse : si vous ne savez pas, choisissez « Je ne sais pas » ou laissez vide."
+    },
+    "notice-db": {
+      ht: "<b>Repons yo anrejistre otomatikman sou aparèy sa a.</b> Ou ka sispann epi kontinye pita sou menm aparèy la. Lè ou fini, klike « Voye repons yo ».",
+      fr: "<b>Vos réponses sont gardées sur cet appareil.</b> Vous pouvez vous arrêter et reprendre plus tard sur le même appareil. Quand vous avez terminé, cliquez « Envoyer »."
+    },
+    "notice-copy": {
+      ht: "<b>Repons yo anrejistre sou aparèy sa a sèlman.</b> Lè ou fini, klike « Kopye repons yo » epi kole yo nan yon mesaj WhatsApp oswa yon imèl pou moun ki te voye kesyonè a ba ou.",
+      fr: "<b>Vos réponses sont gardées sur cet appareil seulement.</b> Quand vous avez terminé, cliquez « Copier les réponses » et collez-les dans un message WhatsApp ou un e-mail à la personne qui vous a envoyé ce questionnaire."
+    },
+    copy: { ht: "Kopye repons yo", fr: "Copier les réponses" },
+    save: { ht: "Anrejistre", fr: "Enregistrer" },
+    send: { ht: "Voye repons yo", fr: "Envoyer" },
+    copied: { ht: "Repons yo kopye. Kole yo nan WhatsApp oswa nan yon imèl.", fr: "Réponses copiées. Collez-les dans WhatsApp ou un e-mail." },
+    copyFail: { ht: "Kopi a pa mache. Seleksyone tèks ki parèt la a epi kopye l ak men.", fr: "La copie n'a pas fonctionné. Sélectionnez le texte affiché et copiez-le à la main." },
+    saving: { ht: "N ap anrejistre…", fr: "Enregistrement…" },
+    saved: { ht: "Anrejistre", fr: "Enregistré" },
+    sent: { ht: "Repons yo voye. Mèsi! N ap kontakte w byento.", fr: "Réponses envoyées. Merci, nous revenons vers vous rapidement." },
+    saveFail: { ht: "Anrejistreman an pa pase. Tcheke koneksyon an epi eseye ankò, oswa kopye repons yo.", fr: "L'enregistrement a échoué. Vérifiez la connexion et réessayez, ou copiez les réponses." },
+    needContact: { ht: "Tanpri ranpli non moun kontak la ak yon telefòn oswa yon imèl (seksyon 1).", fr: "Merci d'indiquer le nom de la personne contact et un téléphone ou un e-mail (section 1)." },
+    draftLocal: { ht: "Bouyon an kenbe sou aparèy sa a.", fr: "Brouillon gardé sur cet appareil." },
+    progress: { ht: "{a} sou {b} seksyon kòmanse", fr: "{a} sections commencées sur {b}" },
+    other: { ht: "Presize…", fr: "Précisez…" },
+    yes: { ht: "Wi", fr: "Oui" },
+    no: { ht: "Non", fr: "Non" },
+    dk: { ht: "Pa konnen", fr: "Je ne sais pas" },
+    ownerTitle: { ht: "Repons resevwa", fr: "Réponses reçues" },
+    ownerEmpty: { ht: "Poko gen repons. Pataje paj la ak kliyan an ak dwa « Contributor ».", fr: "Aucune réponse pour l'instant. Partagez la page au client avec le droit « Contributeur »." },
+    view: { ht: "Wè", fr: "Voir" },
+    hide: { ht: "Kache", fr: "Masquer" },
+    statusSent: { ht: "Voye", fr: "Envoyé" },
+    statusDraft: { ht: "Bouyon", fr: "Brouillon" }
+  };
+
+  const PHASES = [
+    { v: "now", ht: "Depi lansman an", fr: "Dès le lancement" },
+    { v: "later", ht: "Pita", fr: "Plus tard" },
+    { v: "no", ht: "Pa bezwen", fr: "Pas besoin" }
+  ];
+
+  const yn = [
+    { v: "yes", ht: "Wi", fr: "Oui" },
+    { v: "no", ht: "Non", fr: "Non" },
+    { v: "dk", ht: "Pa konnen", fr: "Je ne sais pas" }
+  ];
+
+  const SECTIONS = [
+    {
+      id: "asso",
+      t: { ht: "Asosyasyon an ak moun kontak la", fr: "L'association et la personne contact" },
+      d: { ht: "Pou nou konnen ak ki moun n ap travay ak ki moun ki pran desizyon.", fr: "Pour savoir avec qui nous travaillons et qui décide." },
+      q: [
+        { id: "nom_officiel", type: "text", t: { ht: "Non ofisyèl asosyasyon an", fr: "Nom officiel de l'association" }, ph: "Asosyasyon LibEsans (ALIBESANS)" },
+        { id: "annee_creation", type: "text", t: { ht: "Ane kreyasyon", fr: "Année de création" } },
+        { id: "statut", type: "radio", t: { ht: "Estati legal asosyasyon an", fr: "Statut légal de l'association" },
+          opts: [
+            { v: "reconnue", ht: "Rekonèt ofisyèlman (pa egzanp MAST)", fr: "Reconnue officiellement (par exemple au MAST)" },
+            { v: "en_cours", ht: "Demann lan an kou", fr: "Démarches en cours" },
+            { v: "non", ht: "Pa ankò rekonèt", fr: "Pas encore reconnue" },
+            { v: "dk", ht: "Pa konnen", fr: "Je ne sais pas" }
+          ] },
+        { id: "zone", type: "textarea", t: { ht: "Ki kote asosyasyon an aktif?", fr: "Où l'association est-elle active ?" }, h: { ht: "Komin, depatman, peyi. Èske gen manm oswa sipòtè nan dyaspora a?", fr: "Communes, départements, pays. Avez-vous des membres ou soutiens dans la diaspora ?" } },
+        { id: "contact_nom", type: "text", req: true, t: { ht: "Non moun kontak la", fr: "Nom de la personne contact" } },
+        { id: "contact_role", type: "text", t: { ht: "Fonksyon li nan asosyasyon an", fr: "Sa fonction dans l'association" } },
+        { id: "contact_tel", type: "tel", t: { ht: "Telefòn / WhatsApp", fr: "Téléphone / WhatsApp" }, ph: "+509 …" },
+        { id: "contact_email", type: "email", t: { ht: "Imèl", fr: "E-mail" } },
+        { id: "decideur", type: "radio", t: { ht: "Ki moun ki pran desizyon final sou sit la (kontni, konsepsyon, bidjè)?", fr: "Qui prend la décision finale sur le site (contenu, design, budget) ?" },
+          opts: [
+            { v: "contact", ht: "Moun kontak la menm", fr: "La personne contact elle-même" },
+            { v: "autre", ht: "Yon lòt moun", fr: "Une autre personne" },
+            { v: "comite", ht: "Yon komite oswa konsèy administrasyon", fr: "Un comité ou le conseil d'administration" }
+          ], other: true,
+          h: { ht: "Si se yon komite, konbyen tan li pran pou l reyini epi valide yon bagay?", fr: "Si c'est un comité, combien de temps lui faut-il pour se réunir et valider ?" } }
+      ]
+    },
+    {
+      id: "objectifs",
+      t: { ht: "Objektif sit la", fr: "Les objectifs du site" },
+      d: { ht: "Sa sit la dwe chanje pou asosyasyon an.", fr: "Ce que le site doit changer pour l'association." },
+      q: [
+        { id: "objectifs", type: "check", cols: true, t: { ht: "Chwazi 3 objektif ki pi enpòtan yo", fr: "Choisissez les 3 objectifs les plus importants" }, max: 3,
+          opts: [
+            { v: "credibilite", ht: "Ranfòse kredibilite asosyasyon an", fr: "Renforcer la crédibilité de l'association" },
+            { v: "partenaires", ht: "Atire patnè ak finansman", fr: "Attirer partenaires et financements" },
+            { v: "visibilite", ht: "Fè pwojè yo pi vizib", fr: "Rendre les projets visibles" },
+            { v: "jeunes", ht: "Rive jwenn plis jèn pou pwogram yo", fr: "Toucher plus de jeunes pour les programmes" },
+            { v: "benevoles", ht: "Rekrite volontè ak mentor", fr: "Recruter bénévoles et mentors" },
+            { v: "annonces", ht: "Anonse apèl, bous ak aktivite", fr: "Annoncer appels, bourses et activités" },
+            { v: "dons", ht: "Resevwa don", fr: "Recevoir des dons" },
+            { v: "redevabilite", ht: "Montre rezilta bay bayè yo", fr: "Rendre compte des résultats aux bailleurs" }
+          ] },
+        { id: "publics", type: "check", cols: true, t: { ht: "Ki moun sit la dwe touche an premye?", fr: "Qui le site doit-il toucher en priorité ?" },
+          opts: [
+            { v: "jeunes", ht: "Jèn yo", fr: "Les jeunes" },
+            { v: "parents", ht: "Paran yo", fr: "Les parents" },
+            { v: "ecoles", ht: "Lekòl yo", fr: "Les écoles" },
+            { v: "bailleurs", ht: "Bayè ak fondasyon", fr: "Bailleurs et fondations" },
+            { v: "entreprises", ht: "Antrepriz", fr: "Entreprises" },
+            { v: "diaspora", ht: "Dyaspora a", fr: "La diaspora" },
+            { v: "autorites", ht: "Otorite ak enstitisyon", fr: "Autorités et institutions" },
+            { v: "communaute", ht: "Kominote a an jeneral", fr: "La communauté en général" }
+          ], other: true },
+        { id: "succes", type: "textarea", t: { ht: "Nan 6 mwa apre lansman an, kisa ki ta montre sit la reyisi?", fr: "Six mois après le lancement, qu'est-ce qui montrerait que le site a réussi ?" }, h: { ht: "Pa egzanp: kantite volontè ki enskri, yon patnè ki kontakte nou, kantite kandidati pou LIBESANS TALAN.", fr: "Par exemple : nombre de bénévoles inscrits, un partenaire qui nous contacte, nombre de candidatures à LIBESANS TALAN." } },
+        { id: "references", type: "textarea", t: { ht: "Sit entènèt ou renmen (lòt asosyasyon, ONG, nenpòt)", fr: "Sites que vous aimez (autres associations, ONG, autres)" }, h: { ht: "Mete adrès yo, epi di sa ou renmen ladan yo.", fr: "Indiquez les adresses et ce qui vous plaît." } },
+        { id: "anti_references", type: "textarea", t: { ht: "Sa ou pa vle wè sou sit la", fr: "Ce que vous ne voulez pas voir sur le site" } }
+      ]
+    },
+    {
+      id: "contenu",
+      t: { ht: "Kontni: tèks, foto, videyo", fr: "Le contenu : textes, photos, vidéos" },
+      d: { ht: "Se kontni an ki pi souvan retade yon sit. Nou bezwen konnen sa ki deja la.", fr: "C'est le contenu qui retarde le plus souvent un site. Nous devons savoir ce qui existe déjà." },
+      q: [
+        { id: "langues", type: "check", t: { ht: "Nan ki lang sit la dwe ye?", fr: "Dans quelles langues le site doit-il être ?" }, h: { ht: "Chak lang anplis vle di tout tèks yo ekri e mete ajou de fwa.", fr: "Chaque langue supplémentaire signifie tous les textes écrits et mis à jour deux fois." },
+          opts: [
+            { v: "ht", ht: "Kreyòl", fr: "Créole" },
+            { v: "fr", ht: "Fransè", fr: "Français" },
+            { v: "en", ht: "Anglè", fr: "Anglais" }
+          ], other: true },
+        { id: "langue_principale", type: "radio", t: { ht: "Si se plizyè lang, ki lang ki prensipal la?", fr: "Si plusieurs langues, laquelle est principale ?" },
+          opts: [
+            { v: "ht", ht: "Kreyòl", fr: "Créole" },
+            { v: "fr", ht: "Fransè", fr: "Français" },
+            { v: "en", ht: "Anglè", fr: "Anglais" }
+          ] },
+        { id: "textes", type: "radio", t: { ht: "Tèks yo (prezantasyon, misyon, pwogram)", fr: "Les textes (présentation, mission, programmes)" },
+          opts: [
+            { v: "prets", ht: "Nou deja genyen yo", fr: "Nous les avons déjà" },
+            { v: "a_ecrire", ht: "N ap ekri yo nou menm", fr: "Nous allons les écrire nous-mêmes" },
+            { v: "aide", ht: "Nou bezwen èd pou ekri yo", fr: "Nous avons besoin d'aide pour les écrire" }
+          ] },
+        { id: "documents", type: "check", cols: true, t: { ht: "Dokiman ki egziste deja", fr: "Documents qui existent déjà" },
+          opts: [
+            { v: "plaquette", ht: "Bwochi oswa plakèt", fr: "Brochure ou plaquette" },
+            { v: "statuts", ht: "Estati asosyasyon an", fr: "Statuts de l'association" },
+            { v: "rapport", ht: "Rapò aktivite oswa rapò anyèl", fr: "Rapport d'activité ou rapport annuel" },
+            { v: "projet", ht: "Dokiman pwojè LIBESANS TALAN", fr: "Document de projet LIBESANS TALAN" },
+            { v: "presentation", ht: "Prezantasyon pou bayè", fr: "Présentation pour bailleurs" },
+            { v: "aucun", ht: "Anyen pou kounye a", fr: "Rien pour l'instant" }
+          ] },
+        { id: "nb_programmes", type: "text", t: { ht: "Konbyen pwogram oswa inisyativ sit la dwe prezante nan lansman an?", fr: "Combien de programmes ou initiatives le site doit-il présenter au lancement ?" }, h: { ht: "LIBESANS TALAN, klib lekti, fòmasyon, bous… Kilès ki aktif deja, kilès ki poko kòmanse?", fr: "LIBESANS TALAN, clubs de lecture, formations, bourses… Lesquels sont déjà actifs, lesquels pas encore ?" } },
+        { id: "photos", type: "radio", t: { ht: "Foto aktivite nou yo", fr: "Photos de vos activités" },
+          opts: [
+            { v: "beaucoup", ht: "Nou gen anpil foto bon kalite", fr: "Nous avons beaucoup de photos de bonne qualité" },
+            { v: "quelques", ht: "Nou gen kèk foto, kalite a varye", fr: "Nous avons quelques photos, de qualité variable" },
+            { v: "aucune", ht: "Nou pa gen foto", fr: "Nous n'avons pas de photos" }
+          ] },
+        { id: "videos", type: "radio", t: { ht: "Videyo", fr: "Vidéos" },
+          opts: [
+            { v: "youtube", ht: "Nou gen videyo sou YouTube oswa Facebook", fr: "Nous avons des vidéos sur YouTube ou Facebook" },
+            { v: "fichiers", ht: "Nou gen videyo men yo poko pibliye", fr: "Nous avons des vidéos non publiées" },
+            { v: "aucune", ht: "Nou pa gen videyo", fr: "Nous n'avons pas de vidéos" }
+          ] },
+        { id: "temoignages", type: "radio", t: { ht: "Temwayaj benefisyè", fr: "Témoignages de bénéficiaires" },
+          opts: [
+            { v: "accord", ht: "Nou genyen, ak dakò moun yo pou pibliye", fr: "Nous en avons, avec l'accord des personnes pour publier" },
+            { v: "sans_accord", ht: "Nou genyen, men nou poko mande dakò", fr: "Nous en avons, mais sans accord demandé" },
+            { v: "aucun", ht: "Nou poko genyen", fr: "Nous n'en avons pas encore" }
+          ] },
+        { id: "mineurs", type: "radio", t: { ht: "Foto ak non jèn ki minè: èske nou gen otorizasyon paran yo?", fr: "Photos et noms de jeunes mineurs : avez-vous l'autorisation des parents ?" }, h: { ht: "Sa enpòtan anpil: nou p ap pibliye foto oswa temwayaj yon timoun san otorizasyon paran l.", fr: "C'est important : nous ne publierons pas de photo ni de témoignage d'un mineur sans l'autorisation de ses parents." },
+          opts: [
+            { v: "toutes", ht: "Wi, pou tout foto yo", fr: "Oui, pour toutes les photos" },
+            { v: "certaines", ht: "Pou kèk ladan yo", fr: "Pour certaines" },
+            { v: "non", ht: "Non", fr: "Non" },
+            { v: "inconnu", ht: "Nou pa t konnen fòk nou te genyen l", fr: "Nous ne savions pas qu'il le fallait" }
+          ] },
+        { id: "resultats", type: "textarea", t: { ht: "Rezilta ak chif nou ka pibliye", fr: "Résultats et chiffres publiables" }, h: { ht: "Pa egzanp: kantite jèn ki benefisye, kantite fòmasyon, lekòl patnè. Sèlman chif nou ka pwouve.", fr: "Par exemple : nombre de jeunes accompagnés, de formations, d'écoles partenaires. Uniquement des chiffres vérifiables." } }
+      ]
+    },
+    {
+      id: "fonctions",
+      t: { ht: "Sa sit la dwe fè", fr: "Ce que le site doit faire" },
+      d: { ht: "Sit la ka grandi etap pa etap, dapre bidjè a. Pou chak fonksyon, di nou kilè nou bezwen l: depi lansman an, pita, oswa pa ditou.", fr: "Le site peut grandir par étapes, au rythme du budget. Pour chaque fonction, dites-nous quand vous en avez besoin : dès le lancement, plus tard, ou pas du tout." },
+      q: [
+        { id: "fonctions_etapes", type: "phase", t: { ht: "Kilè nou bezwen chak fonksyon?", fr: "Quand avez-vous besoin de chaque fonction ?" },
+          h: { ht: "Mwens fonksyon nan lansman an, pi vit e pi bon mache sit la ka parèt. Rès la ka vini apre.", fr: "Moins il y a de fonctions au lancement, plus le site sort vite et à moindre coût. Le reste peut venir ensuite." },
+          opts: [
+            { v: "presentation", ht: "Prezantasyon: misyon, vizyon, ekip", fr: "Présentation : mission, vision, équipe" },
+            { v: "programmes", ht: "Paj pou chak pwogram", fr: "Une page par programme" },
+            { v: "actualites", ht: "Nouvèl ak anons", fr: "Actualités et annonces" },
+            { v: "agenda", ht: "Aktivite k ap vini (ajanda)", fr: "Activités à venir (agenda)" },
+            { v: "galerie", ht: "Galri foto", fr: "Galerie photos" },
+            { v: "videos", ht: "Videyo", fr: "Vidéos" },
+            { v: "temoignages", ht: "Temwayaj", fr: "Témoignages" },
+            { v: "engagement", ht: "Fòmilè volontè, mentor, patnè, sipòtè", fr: "Formulaire bénévole, mentor, partenaire, soutien" },
+            { v: "candidature", ht: "Kandidati an liy pou yon pwogram (LIBESANS TALAN)", fr: "Candidature en ligne à un programme (LIBESANS TALAN)" },
+            { v: "bourses", ht: "Demann bous oswa sibvansyon pou elèv", fr: "Demande de bourse ou subvention pour élèves" },
+            { v: "dons", ht: "Don an liy", fr: "Dons en ligne" },
+            { v: "newsletter", ht: "Bilten pa imèl", fr: "Lettre d'information par e-mail" },
+            { v: "partenaires", ht: "Paj patnè ak logo yo", fr: "Page partenaires avec leurs logos" },
+            { v: "rapports", ht: "Rapò pou telechaje", fr: "Rapports à télécharger" },
+            { v: "membres", ht: "Espas manm (ak modpas)", fr: "Espace membres (avec mot de passe)" },
+            { v: "deuxieme_langue", ht: "Sit la nan yon dezyèm lang", fr: "Le site dans une deuxième langue" }
+          ] },
+        { id: "candidature_docs", type: "radio", t: { ht: "Si gen kandidati oswa demann bous: èske moun yo dwe voye dokiman (nòt, papye idantite, lèt)?", fr: "S'il y a candidature ou demande de bourse : les personnes doivent-elles envoyer des documents (notes, pièce d'identité, lettre) ?" }, h: { ht: "Sa mande plis sekirite, paske se done pèsonèl, souvan pou minè.", fr: "Cela demande plus de sécurité, car ce sont des données personnelles, souvent de mineurs." },
+          opts: [
+            { v: "oui", ht: "Wi", fr: "Oui" },
+            { v: "non", ht: "Non, yon fòmilè senp sifi", fr: "Non, un formulaire simple suffit" },
+            { v: "hors_site", ht: "Non, kandidati yo fèt lòt kote (papye, Google Forms…)", fr: "Non, les candidatures se font ailleurs (papier, Google Forms…)" },
+            { v: "dk", ht: "Pa konnen", fr: "Je ne sais pas" }
+          ] },
+        { id: "fonctions_autres", type: "textarea", t: { ht: "Yon lòt fonksyon ki pa nan lis la? Di nou kilè nou ta bezwen l.", fr: "Une autre fonction absente de la liste ? Dites-nous quand il vous la faudrait." } }
+      ]
+    },
+    {
+      id: "dons",
+      t: { ht: "Don ak peman", fr: "Dons et paiements" },
+      d: { ht: "Resevwa lajan sou yon sit mande kont, verifikasyon ak tan. Pi bonè nou konnen, pi bon.", fr: "Recevoir de l'argent sur un site demande comptes, vérifications et délais. Plus tôt nous le savons, mieux c'est." },
+      q: [
+        { id: "dons_quand", type: "radio", t: { ht: "Èske nou vle resevwa don sou sit la?", fr: "Voulez-vous recevoir des dons sur le site ?" },
+          opts: [
+            { v: "lancement", ht: "Wi, depi lansman an", fr: "Oui, dès le lancement" },
+            { v: "plus_tard", ht: "Wi, men pita", fr: "Oui, mais plus tard" },
+            { v: "non", ht: "Non, yon paj « Sipòte nou » ak kontak sifi", fr: "Non, une page « Nous soutenir » avec contact suffit" }
+          ] },
+        { id: "moyens", type: "check", cols: true, t: { ht: "Ki mwayen peman ki enpòtan?", fr: "Quels moyens de paiement comptent ?" },
+          opts: [
+            { v: "moncash", ht: "MonCash", fr: "MonCash" },
+            { v: "natcash", ht: "NatCash", fr: "NatCash" },
+            { v: "carte", ht: "Kat kredi / debi", fr: "Carte bancaire" },
+            { v: "paypal", ht: "PayPal", fr: "PayPal" },
+            { v: "zelle", ht: "Zelle / Cash App (dyaspora)", fr: "Zelle / Cash App (diaspora)" },
+            { v: "virement", ht: "Transfè bankè", fr: "Virement bancaire" }
+          ], other: true },
+        { id: "compte", type: "radio", t: { ht: "Èske asosyasyon an gen yon kont labank nan non li?", fr: "L'association a-t-elle un compte bancaire à son nom ?" }, opts: yn },
+        { id: "dons_recurrents", type: "radio", t: { ht: "Don chak mwa (abònman) pou sipòtè yo?", fr: "Dons mensuels (récurrents) pour les soutiens ?" }, opts: yn },
+        { id: "recus", type: "radio", t: { ht: "Èske donatè yo bezwen yon resi (pa egzanp pou enpo nan peyi kote yo ye)?", fr: "Les donateurs ont-ils besoin d'un reçu (par exemple fiscal dans leur pays) ?" }, opts: yn }
+      ]
+    },
+    {
+      id: "identite",
+      t: { ht: "Idantite vizyèl ak grafis la", fr: "Identité visuelle et graphiste" },
+      d: { ht: "Grafis patnè a ap fè branding lan. Nou bezwen konnen ki kote li ye pou sit la ka avanse an menm tan.", fr: "Le graphiste partenaire prépare l'identité. Nous devons savoir où il en est pour avancer le site en parallèle." },
+      q: [
+        { id: "graphiste", type: "text", t: { ht: "Non ak kontak grafis la", fr: "Nom et contact du graphiste" } },
+        { id: "logo", type: "radio", t: { ht: "Logo", fr: "Logo" },
+          opts: [
+            { v: "final", ht: "Logo a fini e valide", fr: "Le logo est terminé et validé" },
+            { v: "en_cours", ht: "Logo a an kou", fr: "Le logo est en cours" },
+            { v: "a_faire", ht: "Poko kòmanse", fr: "Pas encore commencé" }
+          ] },
+        { id: "charte", type: "check", t: { ht: "Sa grafis la ap livre", fr: "Ce que le graphiste va livrer" },
+          opts: [
+            { v: "logo", ht: "Logo nan plizyè fòma (koulè, blan, nwa)", fr: "Logo en plusieurs versions (couleur, blanc, noir)" },
+            { v: "couleurs", ht: "Koulè ofisyèl yo (kòd koulè)", fr: "Couleurs officielles (codes)" },
+            { v: "polices", ht: "Polis (tipografi)", fr: "Polices (typographie)" },
+            { v: "guide", ht: "Yon gid itilizasyon (charte grafik)", fr: "Une charte graphique" },
+            { v: "maquettes", ht: "Maket paj sit la", fr: "Maquettes des pages du site" },
+            { v: "dk", ht: "Pa konnen", fr: "Je ne sais pas" }
+          ] },
+        { id: "branding_date", type: "text", t: { ht: "Kilè branding lan ap pare?", fr: "Quand l'identité sera-t-elle prête ?" } },
+        { id: "valeurs_visuelles", type: "textarea", t: { ht: "Kijan ou vle moun santi yo lè yo wè sit la?", fr: "Que voulez-vous que les gens ressentent en voyant le site ?" }, h: { ht: "Nou gen valè yo deja: edikasyon, espwa, lidèchip, kreyativite, solidarite, transfòmasyon. Èske gen koulè oswa estil ou renmen oswa ou pa renmen?", fr: "Les valeurs sont posées : éducation, espoir, leadership, créativité, solidarité, transformation. Des couleurs ou styles que vous aimez, ou pas ?" } }
+      ]
+    },
+    {
+      id: "ecosysteme",
+      t: { ht: "Asosyasyon an ak lòt estrikti LibEsans yo", fr: "L'association et les autres structures LibEsans" },
+      d: { ht: "Non LibEsans deja itilize pou plizyè estrikti. Sit la ap pale sèlman de asosyasyon an: kesyon sa yo ede vizitè a konprann li sou sit asosyasyon an, pa sou sit yon lòt estrikti.", fr: "Le nom LibEsans désigne déjà plusieurs structures. Le site ne parlera que de l'association : ces questions aident le visiteur à comprendre qu'il est chez l'association, et pas chez une autre structure." },
+      q: [
+        { id: "eco_structures", type: "check", cols: true, t: { ht: "Ki lòt estrikti ki pote non LibEsans?", fr: "Quelles autres structures portent le nom LibEsans ?" },
+          opts: [
+            { v: "studio", ht: "LibEsans Studio", fr: "LibEsans Studio" },
+            { v: "novae", ht: "LibEsans Novae / Novae Academy", fr: "LibEsans Novae / Novae Academy" },
+            { v: "perso", ht: "Sit pèsonèl yon fondatè oswa yon fondatris", fr: "Le site personnel d'un fondateur ou d'une fondatrice" },
+            { v: "aucune", ht: "Okenn lòt", fr: "Aucune autre" }
+          ], other: true },
+        { id: "eco_dirigeants", type: "textarea", t: { ht: "Ki moun ki dirije chak estrikti?", fr: "Qui dirige chaque structure ?" }, h: { ht: "Èske moun ki dirije asosyasyon an dirije tou Studio a oswa Novae?", fr: "La personne qui porte l'association dirige-t-elle aussi le Studio ou Novae ?" } },
+        { id: "eco_identite", type: "radio", t: { ht: "Idantite vizyèl asosyasyon an pa rapò ak lòt estrikti yo", fr: "L'identité visuelle de l'association par rapport aux autres structures" }, h: { ht: "Grafis la bezwen repons sa a anvan l kòmanse desine.", fr: "Le graphiste a besoin de cette réponse avant de commencer à dessiner." },
+          opts: [
+            { v: "commune", ht: "Menm logo ak menm koulè pou tout estrikti yo", fr: "Le même logo et les mêmes couleurs pour toutes les structures" },
+            { v: "famille", ht: "Yon fanmi komen (pa egzanp monogram « LS· »), ak yon varyant pou asosyasyon an", fr: "Une famille commune (par exemple le monogramme « LS· »), avec une variante propre à l'association" },
+            { v: "distincte", ht: "Yon idantite apa nèt pou asosyasyon an", fr: "Une identité entièrement distincte pour l'association" },
+            { v: "dk", ht: "Poko deside", fr: "Pas encore décidé" }
+          ] },
+        { id: "eco_liens", type: "radio", t: { ht: "Èske sit asosyasyon an dwe voye moun sou lòt estrikti yo?", fr: "Le site de l'association doit-il renvoyer vers les autres structures ?" },
+          opts: [
+            { v: "jamais", ht: "Non, pa ditou", fr: "Non, pas du tout" },
+            { v: "pied", ht: "Yon ti lyen sèlman, an ba paj la", fr: "Un simple lien en bas de page" },
+            { v: "section", ht: "Yon ti seksyon « Fanmi LibEsans »", fr: "Une courte section « La famille LibEsans »" },
+            { v: "dk", ht: "Poko deside", fr: "Pas encore décidé" }
+          ] },
+        { id: "eco_reseaux", type: "radio", t: { ht: "Rezo sosyal asosyasyon an", fr: "Les réseaux sociaux de l'association" },
+          opts: [
+            { v: "propres", ht: "Asosyasyon an gen pwòp kont li", fr: "L'association a ses propres comptes" },
+            { v: "partages", ht: "Li pataje kont yo ak Studio a oswa Novae", fr: "Elle partage les comptes du Studio ou de Novae" },
+            { v: "aucun", ht: "Li poko gen kont", fr: "Elle n'a pas encore de comptes" }
+          ] },
+        { id: "eco_sites", type: "textarea", t: { ht: "Sit entènèt ak domèn lòt estrikti yo", fr: "Sites et domaines des autres structures" }, h: { ht: "Mete adrès yo. Èske gen yon domèn komen (pa egzanp libesans.org) ki pataje ant plizyè estrikti?", fr: "Indiquez les adresses. Y a-t-il un domaine commun (par exemple libesans.org) partagé entre plusieurs structures ?" } }
+      ]
+    },
+    {
+      id: "technique",
+      t: { ht: "Domèn, imèl ak mizajou", fr: "Domaine, e-mail et mises à jour" },
+      d: { ht: "Ki moun ki posede sa, epi ki moun ki pral fè sit la viv apre lansman an.", fr: "Qui possède quoi, et qui fera vivre le site après le lancement." },
+      q: [
+        { id: "domaine", type: "radio", t: { ht: "Non domèn (pa egzanp alibesans.org)", fr: "Nom de domaine (par exemple alibesans.org)" },
+          opts: [
+            { v: "achete", ht: "Nou gen youn deja", fr: "Nous en avons déjà un" },
+            { v: "idee", ht: "Nou gen yon lide men nou poko achte l", fr: "Nous avons une idée mais pas encore acheté" },
+            { v: "aucun", ht: "Nou pa gen okenn", fr: "Nous n'en avons pas" }
+          ], other: true },
+        { id: "domaine_proprio", type: "text", t: { ht: "Si gen yon domèn: ki moun ki achte l, epi nan non ki moun li ye?", fr: "S'il existe : qui l'a acheté, et à quel nom est-il ?" }, h: { ht: "Domèn nan dwe nan non asosyasyon an, pa nan non yon moun sèlman.", fr: "Le domaine doit être au nom de l'association, pas d'une seule personne." } },
+        { id: "emails", type: "radio", t: { ht: "Imèl pwofesyonèl (kontak@alibesans.org…)", fr: "Adresses e-mail professionnelles (contact@alibesans.org…)" },
+          opts: [
+            { v: "oui", ht: "Wi, nou bezwen sa", fr: "Oui, nous en avons besoin" },
+            { v: "existant", ht: "Nou genyen deja", fr: "Nous en avons déjà" },
+            { v: "non", ht: "Non, Gmail sifi pou kounye a", fr: "Non, Gmail suffit pour l'instant" }
+          ] },
+        { id: "nb_emails", type: "text", t: { ht: "Si wi, konbyen bwat imèl?", fr: "Si oui, combien de boîtes ?" } },
+        { id: "site_existant", type: "text", t: { ht: "Èske gen yon sit ki egziste deja? Adrès li", fr: "Un site existe-t-il déjà ? Son adresse" } },
+        { id: "reseaux", type: "textarea", t: { ht: "Rezo sosyal asosyasyon an", fr: "Réseaux sociaux de l'association" }, h: { ht: "Facebook, Instagram, TikTok, YouTube, LinkedIn… Mete lyen yo.", fr: "Facebook, Instagram, TikTok, YouTube, LinkedIn… Indiquez les liens." } },
+        { id: "maj_qui", type: "text", t: { ht: "Ki moun ki pral mete sit la ajou apre lansman an?", fr: "Qui mettra le site à jour après le lancement ?" } },
+        { id: "maj_aisance", type: "radio", t: { ht: "Konbyen moun sa a alèz ak òdinatè?", fr: "Quelle est l'aisance de cette personne avec l'informatique ?" },
+          opts: [
+            { v: "facile", ht: "Byen alèz, li deja jere sit oswa paj Facebook", fr: "À l'aise, elle gère déjà un site ou une page Facebook" },
+            { v: "moyen", ht: "Li ka aprann ak yon fòmasyon", fr: "Elle peut apprendre avec une formation" },
+            { v: "difficile", ht: "Li pa alèz, nou ta prefere yon moun fè l pou nou", fr: "Pas à l'aise, nous préférerions déléguer" }
+          ] },
+        { id: "maj_frequence", type: "radio", t: { ht: "Konbyen fwa nou panse pibliye nouvo kontni?", fr: "À quelle fréquence pensez-vous publier ?" },
+          opts: [
+            { v: "semaine", ht: "Chak semèn", fr: "Chaque semaine" },
+            { v: "mois", ht: "Kèk fwa pa mwa", fr: "Quelques fois par mois" },
+            { v: "rare", ht: "Raman, lè gen yon evènman", fr: "Rarement, lors d'un événement" }
+          ] },
+        { id: "connexion", type: "radio", t: { ht: "Kijan ekip la konekte pi souvan?", fr: "Comment l'équipe se connecte-t-elle le plus souvent ?" },
+          opts: [
+            { v: "telephone", ht: "Sou telefòn, ak done mobil", fr: "Sur téléphone, en données mobiles" },
+            { v: "ordinateur", ht: "Sou òdinatè, ak bon entènèt", fr: "Sur ordinateur, avec une bonne connexion" },
+            { v: "mixte", ht: "Toude", fr: "Les deux" }
+          ] }
+      ]
+    },
+    {
+      id: "calendrier",
+      t: { ht: "Kalandriye", fr: "Calendrier" },
+      d: { ht: "Yon dat ki fiks chanje fason nou òganize travay la.", fr: "Une date fixe change la façon d'organiser le travail." },
+      q: [
+        { id: "date_souhaitee", type: "text", t: { ht: "Kilè nou ta renmen sit la an liy?", fr: "Quand souhaitez-vous la mise en ligne ?" } },
+        { id: "date_ferme", type: "radio", t: { ht: "Èske dat sa a fiks?", fr: "Cette date est-elle impérative ?" },
+          opts: [
+            { v: "ferme", ht: "Wi, gen yon evènman oswa yon bayè k ap tann", fr: "Oui, un événement ou un bailleur attend" },
+            { v: "souple", ht: "Non, se yon swè", fr: "Non, c'est un souhait" }
+          ] },
+        { id: "evenement", type: "textarea", t: { ht: "Si dat la fiks: ki evènman?", fr: "Si la date est impérative : quel événement ?" } },
+        { id: "validation_delai", type: "radio", t: { ht: "Lè nou voye yon pwopozisyon pou valide, nan konbyen tan nou ka reponn?", fr: "Quand nous envoyons une étape à valider, sous quel délai pouvez-vous répondre ?" },
+          opts: [
+            { v: "48h", ht: "Nan 2 jou", fr: "Sous 2 jours" },
+            { v: "semaine", ht: "Nan yon semèn", fr: "Sous une semaine" },
+            { v: "plus", ht: "Plis pase yon semèn", fr: "Plus d'une semaine" }
+          ] }
+      ]
+    },
+    {
+      id: "budget",
+      t: { ht: "Bidjè", fr: "Budget" },
+      d: { ht: "Yon fouchèt ede nou pwopoze sa ki posib vre ak lajan ki disponib, olye nou pwopoze yon bagay ki twò gwo oswa twò piti.", fr: "Une fourchette nous aide à proposer ce qui est réaliste avec les moyens disponibles, plutôt qu'un projet trop grand ou trop petit." },
+      q: [
+        { id: "devise", type: "radio", t: { ht: "Nan ki lajan nou prefere travay?", fr: "Dans quelle monnaie préférez-vous travailler ?" },
+          opts: [
+            { v: "usd", ht: "Dola ameriken (USD)", fr: "Dollar américain (USD)" },
+            { v: "htg", ht: "Goud (HTG)", fr: "Gourde (HTG)" },
+            { v: "cad", ht: "Dola kanadyen (CAD)", fr: "Dollar canadien (CAD)" },
+            { v: "eur", ht: "Euro (EUR)", fr: "Euro (EUR)" }
+          ] },
+        { id: "budget_creation", type: "radio", t: { ht: "Bidjè pou kreyasyon sit la (yon sèl fwa, an USD)", fr: "Budget de création du site (une fois, en USD)" },
+          opts: [
+            { v: "lt500", ht: "Mwens pase 500", fr: "Moins de 500" },
+            { v: "500_1000", ht: "500 a 1 000", fr: "500 à 1 000" },
+            { v: "1000_2000", ht: "1 000 a 2 000", fr: "1 000 à 2 000" },
+            { v: "2000_3500", ht: "2 000 a 3 500", fr: "2 000 à 3 500" },
+            { v: "gt3500", ht: "Plis pase 3 500", fr: "Plus de 3 500" },
+            { v: "inconnu", ht: "Poko fikse", fr: "Pas encore fixé" }
+          ] },
+        { id: "budget_mensuel", type: "radio", t: { ht: "Bidjè chak mwa pou ebèjman ak antretyen (an USD)", fr: "Budget mensuel hébergement et maintenance (en USD)" }, h: { ht: "Yon sit bezwen ebèjman, mizajou sekirite ak sovgad, menm apre lansman.", fr: "Un site a besoin d'hébergement, de mises à jour de sécurité et de sauvegardes, même après le lancement." },
+          opts: [
+            { v: "lt25", ht: "Mwens pase 25", fr: "Moins de 25" },
+            { v: "25_50", ht: "25 a 50", fr: "25 à 50" },
+            { v: "50_100", ht: "50 a 100", fr: "50 à 100" },
+            { v: "gt100", ht: "Plis pase 100", fr: "Plus de 100" },
+            { v: "inconnu", ht: "Poko konnen", fr: "Je ne sais pas encore" }
+          ] },
+        { id: "financement", type: "check", t: { ht: "Kote lajan an ap soti?", fr: "D'où vient le financement ?" },
+          opts: [
+            { v: "propres", ht: "Fon pwòp asosyasyon an", fr: "Fonds propres de l'association" },
+            { v: "bailleur", ht: "Yon bayè oswa sibvansyon ki prevwa sa", fr: "Un bailleur ou une subvention dédiée" },
+            { v: "partenaire", ht: "Yon patnè oswa yon antrepriz", fr: "Un partenaire ou une entreprise" },
+            { v: "collecte", ht: "Yon kolèk pami manm yo", fr: "Une collecte parmi les membres" },
+            { v: "inconnu", ht: "Poko konnen", fr: "Pas encore défini" }
+          ] },
+        { id: "bailleur_conditions", type: "textarea", t: { ht: "Si se yon bayè: èske li mande devi, fakti, rapò oswa yon dat limit?", fr: "Si c'est un bailleur : exige-t-il devis, factures, rapports ou une échéance ?" } },
+        { id: "paiement", type: "radio", t: { ht: "Kijan nou ta prefere peye?", fr: "Comment préféreriez-vous payer ?" },
+          opts: [
+            { v: "deux", ht: "Yon avans, rès la nan livrezon", fr: "Un acompte, le solde à la livraison" },
+            { v: "trois", ht: "An twa fwa, swiv etap travay yo", fr: "En trois fois, selon les étapes" },
+            { v: "mensuel", ht: "Ti kras chak mwa", fr: "Par mensualités" },
+            { v: "une", ht: "Yon sèl fwa", fr: "En une fois" }
+          ] },
+        { id: "approbation", type: "text", t: { ht: "Ki moun ki apwouve depans lan?", fr: "Qui approuve la dépense ?" } }
+      ]
+    },
+    {
+      id: "autres",
+      t: { ht: "Lòt bagay", fr: "Autres points" },
+      d: { ht: "Sa nou pa t mande men ou panse nou dwe konnen.", fr: "Ce que nous n'avons pas demandé mais que vous jugez utile." },
+      q: [
+        { id: "inquietudes", type: "textarea", t: { ht: "Èske gen yon bagay ki enkyete nou nan pwojè sa a?", fr: "Y a-t-il quelque chose qui vous inquiète dans ce projet ?" }, h: { ht: "Yon move eksperyans ak yon lòt sit, yon kontrent, yon moun ki dwe dakò…", fr: "Une mauvaise expérience passée, une contrainte, une personne à convaincre…" } },
+        { id: "questions", type: "textarea", t: { ht: "Kesyon pou nou", fr: "Vos questions pour nous" } },
+        { id: "libre", type: "textarea", t: { ht: "Nenpòt lòt bagay", fr: "Tout autre chose" } }
+      ]
+    }
+  ];
+
+  const STORAGE_KEY = "alibesans-kesyone-draft-v1";
+  let lang = "ht";
+  let answers = {};
+  const DEVICE_KEY = "alibesans-kesyone-device-v1";
+  let remote = false;
+  let deviceId = null;
+  // Relais d'envoi : chaque envoi arrive par courriel. GitHub Pages ne reçoit rien.
+  const ENDPOINT = "https://formsubmit.co/ajax/pierremathieu18@gmail.com";
+  let lastSaved = "";
+  let sentAt = null;
+  let saveInFlight = false;
+
+  const $ = (id) => document.getElementById(id);
+  const tr = (o) => (o ? (o[lang] ?? o.ht) : "");
+
+  function loadLocal() {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        if (parsed && typeof parsed === "object") {
+          answers = parsed.answers || {};
+          if (parsed.lang === "fr" || parsed.lang === "ht") lang = parsed.lang;
+          if (typeof parsed.sentAt === "string") sentAt = parsed.sentAt;
+        }
+      }
+    } catch (e) { /* stockage indisponible : on continue sans */ }
+  }
+  function saveLocal() {
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify({ answers, lang, sentAt })); } catch (e) { /* ignoré */ }
+  }
+  // Identifiant aléatoire de l'appareil : un appareil, une ligne côté serveur.
+  function loadDeviceId() {
+    try {
+      const known = localStorage.getItem(DEVICE_KEY);
+      if (known) return known;
+    } catch (e) { /* stockage indisponible : identifiant pour cette visite seulement */ }
+    if (!window.crypto || typeof crypto.randomUUID !== "function") return null;
+    const id = crypto.randomUUID();
+    try { localStorage.setItem(DEVICE_KEY, id); } catch (e) { /* ignoré */ }
+    return id;
+  }
+
+  function el(tag, attrs, ...kids) {
+    const n = document.createElement(tag);
+    for (const [k, v] of Object.entries(attrs || {})) {
+      if (v === undefined || v === null || v === false) continue;
+      if (k === "text") n.textContent = v; else n.setAttribute(k, v === true ? "" : v);
+    }
+    for (const k of kids) if (k) n.append(k);
+    return n;
+  }
+
+  function renderForm() {
+    const form = $("form");
+    form.replaceChildren();
+    SECTIONS.forEach((s, i) => {
+      const sec = el("section", { class: "block", id: "s-" + s.id, "aria-labelledby": "h-" + s.id });
+      sec.append(el("div", { class: "block-head" },
+        el("span", { class: "block-num", text: String(i + 1) }),
+        el("h2", { id: "h-" + s.id, text: tr(s.t) }),
+        el("p", { text: tr(s.d) })
+      ));
+      s.q.forEach((q) => sec.append(renderQuestion(q)));
+      form.append(sec);
+    });
+  }
+
+  function renderQuestion(q) {
+    const wrap = el("div", { class: "q" });
+    const help = q.h ? el("div", { class: "help", id: "help-" + q.id, text: tr(q.h) }) : null;
+    const reqMark = q.req ? el("span", { class: "req", "aria-hidden": "true", text: "*" }) : null;
+
+    if (q.type === "phase") {
+      const fs = el("fieldset", { style: "border:0;padding:0;margin:0;display:grid;gap:8px;min-width:0" });
+      fs.append(el("legend", { class: "legend", style: "padding:0;font-weight:700;margin-bottom:8px", text: tr(q.t) }));
+      if (help) fs.append(help);
+      const current = (answers[q.id] && typeof answers[q.id] === "object" && !Array.isArray(answers[q.id])) ? answers[q.id] : {};
+      const list = el("div", { class: "phases" });
+      q.opts.forEach((o) => {
+        const name = q.id + "__" + o.v;
+        const seg = el("div", { class: "seg", role: "radiogroup", "aria-label": tr(o) });
+        PHASES.forEach((p) => {
+          const id = "f-" + name + "-" + p.v;
+          const input = el("input", { type: "radio", name, id, value: p.v });
+          input.checked = current[o.v] === p.v;
+          input.addEventListener("change", () => onPhaseChange(q, o.v, p.v));
+          seg.append(el("label", { for: id, class: "seg-" + p.v }, input, el("span", { text: tr(p) })));
+        });
+        list.append(el("div", { class: "phase-row" }, el("span", { class: "phase-name", text: tr(o) }), seg));
+      });
+      fs.append(list);
+      wrap.append(fs);
+      return wrap;
+    }
+
+    if (q.type === "radio" || q.type === "check") {
+      const fs = el("fieldset", { style: "border:0;padding:0;margin:0;display:grid;gap:8px;min-width:0" });
+      const legend = el("legend", { class: "legend", style: "padding:0;font-weight:700;margin-bottom:8px" }, document.createTextNode(tr(q.t)));
+      if (q.max) legend.append(document.createTextNode(lang === "ht" ? " (" + q.max + " maksimòm)" : " (" + q.max + " au maximum)"));
+      fs.append(legend);
+      if (help) fs.append(help);
+      const box = el("div", { class: "opts" + (q.cols ? " cols" : "") });
+      const current = answers[q.id];
+      q.opts.forEach((o) => {
+        const id = "f-" + q.id + "-" + o.v;
+        const input = el("input", { type: q.type === "radio" ? "radio" : "checkbox", name: q.id, id, value: o.v });
+        if (q.type === "radio") input.checked = current === o.v;
+        else input.checked = Array.isArray(current) && current.includes(o.v);
+        input.addEventListener("change", () => onOptChange(q, input));
+        box.append(el("label", { class: "opt", for: id }, input, el("span", { text: tr(o) })));
+      });
+      fs.append(box);
+      if (q.other) fs.append(textInput(q.id + "_other", tr(UI.other), "other"));
+      wrap.append(fs);
+      return wrap;
+    }
+
+    const id = "f-" + q.id;
+    const label = el("label", { for: id }, document.createTextNode(tr(q.t)));
+    if (reqMark) label.append(reqMark);
+    wrap.append(label);
+    if (help) wrap.append(help);
+    if (q.type === "textarea") {
+      const ta = el("textarea", { id, name: q.id, "aria-describedby": help ? help.id : null });
+      ta.value = answers[q.id] || "";
+      ta.addEventListener("input", () => setAnswer(q.id, ta.value));
+      wrap.append(ta);
+    } else {
+      const inp = el("input", { type: q.type === "text" ? "text" : q.type, id, name: q.id, placeholder: q.ph || null, "aria-describedby": help ? help.id : null, autocomplete: q.type === "email" ? "email" : (q.type === "tel" ? "tel" : null), required: q.req || null });
+      inp.value = answers[q.id] || "";
+      inp.addEventListener("input", () => setAnswer(q.id, inp.value));
+      wrap.append(inp);
+    }
+    return wrap;
+  }
+
+  function textInput(key, placeholder, cls) {
+    const inp = el("input", { type: "text", id: "f-" + key, name: key, placeholder, class: cls, "aria-label": placeholder });
+    inp.value = answers[key] || "";
+    inp.addEventListener("input", () => setAnswer(key, inp.value));
+    return inp;
+  }
+
+  function onOptChange(q, input) {
+    if (q.type === "radio") {
+      setAnswer(q.id, input.value);
+      return;
+    }
+    let arr = Array.isArray(answers[q.id]) ? answers[q.id].slice() : [];
+    if (input.checked) {
+      if (q.max && arr.length >= q.max) { input.checked = false; flash(lang === "ht" ? "Maksimòm " + q.max + " chwa." : q.max + " choix au maximum.", "warn"); return; }
+      arr.push(input.value);
+    } else {
+      arr = arr.filter((v) => v !== input.value);
+    }
+    setAnswer(q.id, arr);
+  }
+
+  function onPhaseChange(q, opt, phase) {
+    const cur = answers[q.id];
+    const map = (cur && typeof cur === "object" && !Array.isArray(cur)) ? Object.assign({}, cur) : {};
+    map[opt] = phase;
+    setAnswer(q.id, map);
+  }
+
+  function setAnswer(key, value) {
+    const empty = value === "" || (Array.isArray(value) && value.length === 0);
+    if (empty) delete answers[key]; else answers[key] = value;
+    saveLocal();
+    updateProgress();
+    if (remote) setStatus(tr(UI.draftLocal), "");
+  }
+
+  function sectionStarted(s) {
+    return s.q.some((q) => answers[q.id] !== undefined || answers[q.id + "_other"] !== undefined);
+  }
+  function updateProgress() {
+    const bar = $("progress");
+    bar.replaceChildren(...SECTIONS.map((s) => el("span", { class: sectionStarted(s) ? "done" : "" })));
+    const a = SECTIONS.filter(sectionStarted).length;
+    $("progress-label").textContent = tr(UI.progress).replace("{a}", a).replace("{b}", SECTIONS.length);
+  }
+
+  function optLabel(q, v, l) {
+    const o = (q.opts || []).find((x) => x.v === v);
+    return o ? (o[l] ?? o.ht) : v;
+  }
+  function summaryText(ans, l) {
+    const lines = [];
+    const T = (o) => (o ? (o[l] ?? o.ht) : "");
+    lines.push((l === "ht" ? "KESYONÈ SIT ENTÈNÈT · ASOSYASYON LIBESANS" : "QUESTIONNAIRE SITE WEB · ASSOCIATION LIBESANS"));
+    SECTIONS.forEach((s, i) => {
+      lines.push("", (i + 1) + ". " + T(s.t).toUpperCase());
+      s.q.forEach((q) => {
+        const v = ans[q.id];
+        const other = ans[q.id + "_other"];
+        let out = "";
+        if (q.type === "phase") {
+          const map = (v && typeof v === "object" && !Array.isArray(v)) ? v : {};
+          lines.push("- " + T(q.t));
+          PHASES.forEach((p) => {
+            const picked = q.opts.filter((o) => map[o.v] === p.v).map((o) => T(o));
+            if (picked.length) lines.push("    " + T(p) + " : " + picked.join(", "));
+          });
+          const open = q.opts.filter((o) => !map[o.v]).map((o) => T(o));
+          if (open.length) lines.push("    " + (l === "ht" ? "San repons" : "Sans réponse") + " : " + open.join(", "));
+          return;
+        }
+        if (Array.isArray(v)) out = v.map((x) => optLabel(q, x, l)).join(", ");
+        else if (v !== undefined) out = q.opts ? optLabel(q, v, l) : String(v);
+        if (other) out = out ? out + " · " + other : other;
+        lines.push("- " + T(q.t) + " : " + (out || "-"));
+      });
+    });
+    return lines.join("\n");
+  }
+
+  async function copyAnswers() {
+    const text = summaryText(answers, lang);
+    try {
+      await navigator.clipboard.writeText(text);
+      flash(tr(UI.copied), "ok");
+    } catch (e) {
+      showFallback(text);
+      flash(tr(UI.copyFail), "warn");
+    }
+  }
+  function showFallback(text) {
+    let ta = $("copy-fallback");
+    if (!ta) {
+      ta = el("textarea", { id: "copy-fallback", readonly: true, "aria-label": tr(UI.copy), style: "min-height:240px" });
+      $("form").after(ta);
+    }
+    ta.value = text;
+    ta.focus();
+    ta.select();
+  }
+
+  let flashTimer = null;
+  function setStatus(msg, kind) {
+    const s = $("status");
+    s.textContent = msg;
+    s.className = "status" + (kind ? " " + kind : "");
+  }
+  function flash(msg, kind) {
+    setStatus(msg, kind);
+    clearTimeout(flashTimer);
+  }
+
+  function hasContact() {
+    return (answers.contact_nom || "").trim() && ((answers.contact_tel || "").trim() || (answers.contact_email || "").trim());
+  }
+
+  async function saveRemote(send) {
+    if (!remote || saveInFlight) return;
+    if (send && !hasContact()) { flash(tr(UI.needContact), "warn"); $("f-contact_nom").focus(); return; }
+    saveInFlight = true;
+    $("btn-save").disabled = true; $("btn-send").disabled = true;
+    flash(tr(UI.saving), "");
+    const now = new Date().toISOString();
+    if (send) sentAt = now;
+    const payload = {
+      _subject: "Kesyonè ALIBESANS : " + String(answers.contact_nom || "").trim(),
+      _template: "box",
+      _captcha: "false",
+      contact: String(answers.contact_nom || "").trim(),
+      appareil: deviceId,
+      langue: lang,
+      reponses: summaryText(answers, "fr"),
+      donnees: JSON.stringify(answers)
+    };
+    try {
+      const res = await fetch(ENDPOINT, {
+        method: "POST",
+        headers: { "content-type": "application/json", accept: "application/json" },
+        body: JSON.stringify(payload)
+      });
+      const out = await res.json().catch(() => ({}));
+      if (!res.ok || String(out.success) !== "true") throw new Error("HTTP " + res.status);
+      lastSaved = JSON.stringify(answers);
+      saveLocal();
+      flash(send ? tr(UI.sent) : tr(UI.saved) + " · " + new Date().toLocaleTimeString(lang === "ht" ? "fr-HT" : "fr-FR", { hour: "2-digit", minute: "2-digit" }), "ok");
+    } catch (e) {
+      if (send) sentAt = null;
+      flash(tr(UI.saveFail), "warn");
+    } finally {
+      saveInFlight = false;
+      $("btn-save").disabled = false; $("btn-send").disabled = false;
+    }
+  }
+
+  function applyStatic() {
+    document.documentElement.lang = lang === "ht" ? "ht" : "fr";
+    document.querySelectorAll("[data-t]").forEach((n) => {
+      const key = n.getAttribute("data-t");
+      if (n.hasAttribute("data-html")) n.innerHTML = tr(UI[key]); else n.textContent = tr(UI[key]);
+    });
+    $("btn-copy").textContent = tr(UI.copy);
+    $("btn-save").textContent = tr(UI.save);
+    $("btn-send").textContent = tr(UI.send);
+    ["ht", "fr"].forEach((l) => $("lang-" + l).setAttribute("aria-pressed", String(l === lang)));
+  }
+
+  function setLang(l) {
+    if (l === lang) return;
+    lang = l;
+    saveLocal();
+    applyStatic();
+    renderForm();
+    updateProgress();
+    if (ownerDocs) renderOwner(ownerDocs);
+  }
+
+  // Vue propriétaire : liste des réponses reçues
+  let ownerDocs = null;
+  const openRows = new Set();
+  function renderOwner(docs) {
+    ownerDocs = docs;
+    const box = $("owner");
+    box.hidden = false;
+    box.replaceChildren(el("h2", { text: tr(UI.ownerTitle) + " (" + docs.length + ")" }));
+    if (!docs.length) { box.append(el("p", { class: "meta", style: "margin:0;color:var(--muted)", text: tr(UI.ownerEmpty) })); return; }
+    docs.forEach((d) => {
+      const data = d.data || {};
+      const ans = (data.answers && typeof data.answers === "object") ? data.answers : {};
+      const sent = data.status === "sent";
+      const when = data.updatedAt ? new Date(data.updatedAt).toLocaleString("fr-FR", { dateStyle: "medium", timeStyle: "short" }) : "";
+      const btn = el("button", { type: "button", class: "btn", text: openRows.has(d.id) ? tr(UI.hide) : tr(UI.view) });
+      const row = el("div", { class: "row" },
+        el("div", { class: "who" },
+          el("div", { text: String(ans.contact_nom || "-") + (ans.contact_role ? " · " + ans.contact_role : "") }),
+          el("div", { class: "meta" }, el("span", { class: "pill " + (sent ? "sent" : "draft"), text: sent ? tr(UI.statusSent) : tr(UI.statusDraft) }), document.createTextNode(" " + when))
+        ),
+        btn
+      );
+      box.append(row);
+      if (openRows.has(d.id)) box.append(el("pre", { text: summaryText(ans, "fr") }));
+      btn.addEventListener("click", () => { openRows.has(d.id) ? openRows.delete(d.id) : openRows.add(d.id); renderOwner(ownerDocs); });
+    });
+  }
+
+  function connect() {
+    deviceId = loadDeviceId();
+    if (!deviceId) return;
+    remote = true;
+
+    $("mode-notice").setAttribute("data-t", "notice-db");
+    applyStatic();
+    $("btn-send").hidden = false;
+  }
+
+  document.querySelectorAll(".lang button").forEach((b) => b.addEventListener("click", () => setLang(b.dataset.lang)));
+  $("btn-copy").addEventListener("click", copyAnswers);
+  $("btn-save").addEventListener("click", () => saveRemote(false));
+  $("btn-send").addEventListener("click", () => saveRemote(true));
+
+  loadLocal();
+  applyStatic();
+  renderForm();
+  updateProgress();
+  connect();
+})();
+</script>
+</body>
+</html>
