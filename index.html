@@ -1,14 +1,10 @@
 <!doctype html>
-<html lang="ht">
+<html lang="fr">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Kesyonè ALIBESANS</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&display=swap">
+<title>Questionnaire : site de l'Association LibEsans</title>
 <style>
-/* Mise en page : une colonne de lecture, sections numérotées (c'est un vrai parcours), barre d'actions collée en bas */
 :root {
   --bg: #f4f5fa;
   --surface: #ffffff;
@@ -20,8 +16,8 @@
   --focus: #2f4fd8;
   --ok: #1f7a4d;
   --warn: #9a5b00;
-  --font-display: "Bricolage Grotesque", "Avenir Next", "Segoe UI", system-ui, sans-serif;
-  --font-body: "Atkinson Hyperlegible", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --font-display: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-body: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   --step--1: 0.875rem;
   --step-0: 1rem;
   --step-1: 1.2rem;
@@ -50,27 +46,15 @@ body {
 }
 .wrap { max-width: 720px; margin: 0 auto; }
 header.top { padding-block: 40px 24px; display: grid; gap: 14px; }
-.topbar { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
-.eyebrow { font-size: var(--step--1); letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); font-weight: 700; }
-h1 { font-family: var(--font-display); font-weight: 700; font-size: var(--step-3); line-height: 1.1; margin: 0; text-wrap: balance; }
-h1 .motto { display: block; font-size: var(--step-1); font-weight: 500; color: var(--accent); margin-top: 8px; }
+h1 { font-weight: 700; font-size: var(--step-2); line-height: 1.2; margin: 0; }
 .intro { color: var(--muted); max-width: 62ch; margin: 0; }
-.intro strong { color: var(--ink); }
-.lang { display: inline-flex; border: 1px solid var(--line); border-radius: 999px; overflow: hidden; background: var(--surface); }
-.lang button { border: 0; background: transparent; color: var(--muted); font: inherit; font-size: var(--step--1); font-weight: 700; padding: 6px 14px; cursor: pointer; }
-.lang button[aria-pressed="true"] { background: var(--ink); color: var(--bg); }
 .notice { border: 1px solid var(--line); background: var(--surface); border-radius: 10px; padding: 14px 16px; font-size: var(--step--1); color: var(--muted); }
-.notice b { color: var(--ink); }
-.progress { display: flex; gap: 4px; margin-top: 4px; }
-.progress span { flex: 1; height: 5px; border-radius: 3px; background: var(--line); }
-.progress span.done { background: var(--accent); }
 .progress-label { font-size: var(--step--1); color: var(--muted); }
 
 section.block { padding-block: 28px; border-top: 1px solid var(--line); display: grid; gap: 22px; }
-.block-head { display: grid; grid-template-columns: auto 1fr; gap: 4px 14px; align-items: baseline; }
-.block-num { font-family: var(--font-display); font-weight: 700; font-size: var(--step-2); color: var(--accent); font-variant-numeric: tabular-nums; grid-row: span 2; }
-.block-head h2 { font-family: var(--font-display); font-weight: 700; font-size: var(--step-2); margin: 0; line-height: 1.2; text-wrap: balance; }
-.block-head p { margin: 0; color: var(--muted); grid-column: 2; min-width: 0; }
+.block-head { display: grid; gap: 4px; }
+.block-head h2 { font-weight: 700; font-size: var(--step-1); margin: 0; line-height: 1.3; }
+.block-head p { margin: 0; color: var(--muted); }
 
 .q { display: grid; gap: 8px; min-width: 0; }
 .q > label, .q > .legend { font-weight: 700; }
@@ -108,7 +92,8 @@ input:focus-visible, textarea:focus-visible, select:focus-visible, button:focus-
 @media (max-width: 560px) {
   .phase-row { grid-template-columns: minmax(0, 1fr); }
   .seg { display: flex; }
-  .seg label { flex: 1; text-align: center; }
+  .seg label { flex: 1 1 0; min-width: 0; text-align: center; }
+  .seg span { white-space: normal; padding: 6px 4px; height: 100%; display: flex; align-items: center; justify-content: center; }
 }
 
 .actions {
@@ -146,20 +131,10 @@ input:focus-visible, textarea:focus-visible, select:focus-visible, button:focus-
 
 <div class="wrap">
   <header class="top">
-    <div class="topbar">
-      <span class="eyebrow" data-t="eyebrow"></span>
-      <div class="lang" role="group" aria-label="Lang / Langue">
-        <button type="button" id="lang-ht" data-lang="ht" aria-pressed="true">Kreyòl</button>
-        <button type="button" id="lang-fr" data-lang="fr" aria-pressed="false">Français</button>
-      </div>
-    </div>
-    <h1><span data-t="title"></span><span class="motto">LibEsans · Devlope. Enspire. Transfòme.</span></h1>
+    <h1 data-t="title"></h1>
     <p class="intro" data-t="intro" data-html></p>
     <div class="notice" id="mode-notice" data-t="notice-copy" data-html></div>
-    <div>
-      <div class="progress" id="progress" aria-hidden="true"></div>
-      <div class="progress-label" id="progress-label"></div>
-    </div>
+    <div class="progress-label" id="progress-label"></div>
   </header>
 
   <div id="owner" class="owner" hidden></div>
@@ -182,28 +157,28 @@ input:focus-visible, textarea:focus-visible, select:focus-visible, button:focus-
 
   const UI = {
     eyebrow: { ht: "Asosyasyon LibEsans · Pwojè sit entènèt", fr: "Association LibEsans · Projet de site web" },
-    title: { ht: "Kesyonè pou prepare sit entènèt la", fr: "Questionnaire de préparation du site web" },
+    title: { ht: "Kesyonè pou prepare sit entènèt la", fr: "Questionnaire pour le site de l'Association LibEsans" },
     intro: {
-      ht: "Repons ou yo ap pèmèt nou konprann pwojè a anvan nou kòmanse, wè difikilte yo davans, epi prepare yon pwopozisyon ak yon bidjè ki koresponn ak bezwen reyèl asosyasyon an. <strong>Kontè 20 a 30 minit.</strong> Pa gen move repons: si ou pa konnen, chwazi « Pa konnen » oswa kite l vid.",
-      fr: "Vos réponses nous permettent de comprendre le projet avant de commencer, d'anticiper les difficultés et de préparer une proposition et un budget adaptés aux besoins réels de l'association. <strong>Comptez 20 à 30 minutes.</strong> Il n'y a pas de mauvaise réponse : si vous ne savez pas, choisissez « Je ne sais pas » ou laissez vide."
+      ht: "Repons ou yo ap pèmèt nou konprann pwojè a anvan nou kòmanse, wè difikilte yo davans, epi prepare yon pwopozisyon ak yon bidjè ki koresponn ak bezwen reyèl asosyasyon an. <strong>Kontè 20 a 30 minit.</strong> Pa gen move repons: si ou pa konnen, chwazi « Pa konnen » oswa kite l vid.",
+      fr: "Ces questions nous servent à préparer une proposition et un devis pour le site de l'association. Comptez 20 à 30 minutes. Si vous ne savez pas, choisissez « Je ne sais pas » ou laissez la question vide."
     },
     "notice-db": {
-      ht: "<b>Repons yo anrejistre otomatikman sou aparèy sa a.</b> Ou ka sispann epi kontinye pita sou menm aparèy la. Lè ou fini, klike « Voye repons yo ».",
-      fr: "<b>Vos réponses sont gardées sur cet appareil.</b> Vous pouvez vous arrêter et reprendre plus tard sur le même appareil. Quand vous avez terminé, cliquez « Envoyer »."
+      ht: "<b>Repons yo anrejistre otomatikman sou aparèy sa a.</b> Ou ka sispann epi kontinye pita sou menm aparèy la. Lè ou fini, klike « Voye repons yo ».",
+      fr: "Vos réponses sont enregistrées sur cet appareil au fur et à mesure : vous pouvez vous arrêter et reprendre plus tard, sur le même téléphone ou le même ordinateur. Quand vous avez fini, cliquez sur « Envoyer »."
     },
     "notice-copy": {
-      ht: "<b>Repons yo anrejistre sou aparèy sa a sèlman.</b> Lè ou fini, klike « Kopye repons yo » epi kole yo nan yon mesaj WhatsApp oswa yon imèl pou moun ki te voye kesyonè a ba ou.",
-      fr: "<b>Vos réponses sont gardées sur cet appareil seulement.</b> Quand vous avez terminé, cliquez « Copier les réponses » et collez-les dans un message WhatsApp ou un e-mail à la personne qui vous a envoyé ce questionnaire."
+      ht: "<b>Repons yo anrejistre sou aparèy sa a sèlman.</b> Lè ou fini, klike « Kopye repons yo » epi kole yo nan yon mesaj WhatsApp oswa yon imèl pou moun ki te voye kesyonè a ba ou.",
+      fr: "Vos réponses sont enregistrées sur cet appareil seulement. Quand vous avez fini, cliquez sur « Copier les réponses » et envoyez-les par WhatsApp ou par e-mail à la personne qui vous a transmis ce questionnaire."
     },
     copy: { ht: "Kopye repons yo", fr: "Copier les réponses" },
     save: { ht: "Anrejistre", fr: "Enregistrer" },
     send: { ht: "Voye repons yo", fr: "Envoyer" },
     copied: { ht: "Repons yo kopye. Kole yo nan WhatsApp oswa nan yon imèl.", fr: "Réponses copiées. Collez-les dans WhatsApp ou un e-mail." },
     copyFail: { ht: "Kopi a pa mache. Seleksyone tèks ki parèt la a epi kopye l ak men.", fr: "La copie n'a pas fonctionné. Sélectionnez le texte affiché et copiez-le à la main." },
-    saving: { ht: "N ap anrejistre…", fr: "Enregistrement…" },
+    saving: { ht: "N ap anrejistre…", fr: "Envoi en cours…" },
     saved: { ht: "Anrejistre", fr: "Enregistré" },
-    sent: { ht: "Repons yo voye. Mèsi! N ap kontakte w byento.", fr: "Réponses envoyées. Merci, nous revenons vers vous rapidement." },
-    saveFail: { ht: "Anrejistreman an pa pase. Tcheke koneksyon an epi eseye ankò, oswa kopye repons yo.", fr: "L'enregistrement a échoué. Vérifiez la connexion et réessayez, ou copiez les réponses." },
+    sent: { ht: "Repons yo voye. Mèsi! N ap kontakte w byento.", fr: "Réponses envoyées. Merci, nous vous recontactons dans les prochains jours." },
+    saveFail: { ht: "Anrejistreman an pa pase. Tcheke koneksyon an epi eseye ankò, oswa kopye repons yo.", fr: "L'envoi n'a pas abouti. Vérifiez votre connexion et réessayez, ou copiez vos réponses pour les envoyer par WhatsApp." },
     needContact: { ht: "Tanpri ranpli non moun kontak la ak yon telefòn oswa yon imèl (seksyon 1).", fr: "Merci d'indiquer le nom de la personne contact et un téléphone ou un e-mail (section 1)." },
     draftLocal: { ht: "Bouyon an kenbe sou aparèy sa a.", fr: "Brouillon gardé sur cet appareil." },
     progress: { ht: "{a} sou {b} seksyon kòmanse", fr: "{a} sections commencées sur {b}" },
@@ -212,7 +187,7 @@ input:focus-visible, textarea:focus-visible, select:focus-visible, button:focus-
     no: { ht: "Non", fr: "Non" },
     dk: { ht: "Pa konnen", fr: "Je ne sais pas" },
     ownerTitle: { ht: "Repons resevwa", fr: "Réponses reçues" },
-    ownerEmpty: { ht: "Poko gen repons. Pataje paj la ak kliyan an ak dwa « Contributor ».", fr: "Aucune réponse pour l'instant. Partagez la page au client avec le droit « Contributeur »." },
+    ownerEmpty: { ht: "Poko gen repons. Pataje paj la ak kliyan an ak dwa « Contributor ».", fr: "Aucune réponse pour l'instant. Partagez la page au client avec le droit « Contributeur »." },
     view: { ht: "Wè", fr: "Voir" },
     hide: { ht: "Kache", fr: "Masquer" },
     statusSent: { ht: "Voye", fr: "Envoyé" },
@@ -263,7 +238,7 @@ input:focus-visible, textarea:focus-visible, select:focus-visible, button:focus-
     {
       id: "objectifs",
       t: { ht: "Objektif sit la", fr: "Les objectifs du site" },
-      d: { ht: "Sa sit la dwe chanje pou asosyasyon an.", fr: "Ce que le site doit changer pour l'association." },
+      d: { ht: "Sa sit la dwe chanje pou asosyasyon an.", fr: "À quoi le site doit servir, et pour qui." },
       q: [
         { id: "objectifs", type: "check", cols: true, t: { ht: "Chwazi 3 objektif ki pi enpòtan yo", fr: "Choisissez les 3 objectifs les plus importants" }, max: 3,
           opts: [
@@ -295,7 +270,7 @@ input:focus-visible, textarea:focus-visible, select:focus-visible, button:focus-
     {
       id: "contenu",
       t: { ht: "Kontni: tèks, foto, videyo", fr: "Le contenu : textes, photos, vidéos" },
-      d: { ht: "Se kontni an ki pi souvan retade yon sit. Nou bezwen konnen sa ki deja la.", fr: "C'est le contenu qui retarde le plus souvent un site. Nous devons savoir ce qui existe déjà." },
+      d: { ht: "Se kontni an ki pi souvan retade yon sit. Nou bezwen konnen sa ki deja la.", fr: "Ce qui existe déjà, et ce qui reste à écrire, photographier ou filmer." },
       q: [
         { id: "langues", type: "check", t: { ht: "Nan ki lang sit la dwe ye?", fr: "Dans quelles langues le site doit-il être ?" }, h: { ht: "Chak lang anplis vle di tout tèks yo ekri e mete ajou de fwa.", fr: "Chaque langue supplémentaire signifie tous les textes écrits et mis à jour deux fois." },
           opts: [
@@ -343,7 +318,7 @@ input:focus-visible, textarea:focus-visible, select:focus-visible, button:focus-
             { v: "sans_accord", ht: "Nou genyen, men nou poko mande dakò", fr: "Nous en avons, mais sans accord demandé" },
             { v: "aucun", ht: "Nou poko genyen", fr: "Nous n'en avons pas encore" }
           ] },
-        { id: "mineurs", type: "radio", t: { ht: "Foto ak non jèn ki minè: èske nou gen otorizasyon paran yo?", fr: "Photos et noms de jeunes mineurs : avez-vous l'autorisation des parents ?" }, h: { ht: "Sa enpòtan anpil: nou p ap pibliye foto oswa temwayaj yon timoun san otorizasyon paran l.", fr: "C'est important : nous ne publierons pas de photo ni de témoignage d'un mineur sans l'autorisation de ses parents." },
+        { id: "mineurs", type: "radio", t: { ht: "Foto ak non jèn ki minè: èske nou gen otorizasyon paran yo?", fr: "Photos et noms de jeunes mineurs : avez-vous l'autorisation des parents ?" }, h: { ht: "Sa enpòtan anpil: nou p ap pibliye foto oswa temwayaj yon timoun san otorizasyon paran l.", fr: "Nous ne publions aucune photo ni aucun témoignage de mineur sans l'autorisation de ses parents." },
           opts: [
             { v: "toutes", ht: "Wi, pou tout foto yo", fr: "Oui, pour toutes les photos" },
             { v: "certaines", ht: "Pou kèk ladan yo", fr: "Pour certaines" },
@@ -356,10 +331,10 @@ input:focus-visible, textarea:focus-visible, select:focus-visible, button:focus-
     {
       id: "fonctions",
       t: { ht: "Sa sit la dwe fè", fr: "Ce que le site doit faire" },
-      d: { ht: "Sit la ka grandi etap pa etap, dapre bidjè a. Pou chak fonksyon, di nou kilè nou bezwen l: depi lansman an, pita, oswa pa ditou.", fr: "Le site peut grandir par étapes, au rythme du budget. Pour chaque fonction, dites-nous quand vous en avez besoin : dès le lancement, plus tard, ou pas du tout." },
+      d: { ht: "Sit la ka grandi etap pa etap, dapre bidjè a. Pou chak fonksyon, di nou kilè nou bezwen l: depi lansman an, pita, oswa pa ditou.", fr: "Le site peut se construire en plusieurs fois, selon le budget. Pour chaque fonction, indiquez si vous en avez besoin dès le lancement, plus tard, ou pas du tout." },
       q: [
         { id: "fonctions_etapes", type: "phase", t: { ht: "Kilè nou bezwen chak fonksyon?", fr: "Quand avez-vous besoin de chaque fonction ?" },
-          h: { ht: "Mwens fonksyon nan lansman an, pi vit e pi bon mache sit la ka parèt. Rès la ka vini apre.", fr: "Moins il y a de fonctions au lancement, plus le site sort vite et à moindre coût. Le reste peut venir ensuite." },
+          h: { ht: "Mwens fonksyon nan lansman an, pi vit e pi bon mache sit la ka parèt. Rès la ka vini apre.", fr: "Moins il y a de fonctions au lancement, plus le site est prêt tôt et moins il coûte au départ." },
           opts: [
             { v: "presentation", ht: "Prezantasyon: misyon, vizyon, ekip", fr: "Présentation : mission, vision, équipe" },
             { v: "programmes", ht: "Paj pou chak pwogram", fr: "Une page par programme" },
@@ -391,13 +366,13 @@ input:focus-visible, textarea:focus-visible, select:focus-visible, button:focus-
     {
       id: "dons",
       t: { ht: "Don ak peman", fr: "Dons et paiements" },
-      d: { ht: "Resevwa lajan sou yon sit mande kont, verifikasyon ak tan. Pi bonè nou konnen, pi bon.", fr: "Recevoir de l'argent sur un site demande comptes, vérifications et délais. Plus tôt nous le savons, mieux c'est." },
+      d: { ht: "Resevwa lajan sou yon sit mande kont, verifikasyon ak tan. Pi bonè nou konnen, pi bon.", fr: "Recevoir des paiements en ligne demande d'ouvrir des comptes et de passer des vérifications, ce qui prend plusieurs semaines." },
       q: [
         { id: "dons_quand", type: "radio", t: { ht: "Èske nou vle resevwa don sou sit la?", fr: "Voulez-vous recevoir des dons sur le site ?" },
           opts: [
             { v: "lancement", ht: "Wi, depi lansman an", fr: "Oui, dès le lancement" },
             { v: "plus_tard", ht: "Wi, men pita", fr: "Oui, mais plus tard" },
-            { v: "non", ht: "Non, yon paj « Sipòte nou » ak kontak sifi", fr: "Non, une page « Nous soutenir » avec contact suffit" }
+            { v: "non", ht: "Non, yon paj « Sipòte nou » ak kontak sifi", fr: "Non, une page « Nous soutenir » avec contact suffit" }
           ] },
         { id: "moyens", type: "check", cols: true, t: { ht: "Ki mwayen peman ki enpòtan?", fr: "Quels moyens de paiement comptent ?" },
           opts: [
@@ -416,7 +391,7 @@ input:focus-visible, textarea:focus-visible, select:focus-visible, button:focus-
     {
       id: "identite",
       t: { ht: "Idantite vizyèl ak grafis la", fr: "Identité visuelle et graphiste" },
-      d: { ht: "Grafis patnè a ap fè branding lan. Nou bezwen konnen ki kote li ye pou sit la ka avanse an menm tan.", fr: "Le graphiste partenaire prépare l'identité. Nous devons savoir où il en est pour avancer le site en parallèle." },
+      d: { ht: "Grafis patnè a ap fè branding lan. Nou bezwen konnen ki kote li ye pou sit la ka avanse an menm tan.", fr: "Où en est le graphiste, et ce qu'il va nous transmettre." },
       q: [
         { id: "graphiste", type: "text", t: { ht: "Non ak kontak grafis la", fr: "Nom et contact du graphiste" } },
         { id: "logo", type: "radio", t: { ht: "Logo", fr: "Logo" },
@@ -435,13 +410,13 @@ input:focus-visible, textarea:focus-visible, select:focus-visible, button:focus-
             { v: "dk", ht: "Pa konnen", fr: "Je ne sais pas" }
           ] },
         { id: "branding_date", type: "text", t: { ht: "Kilè branding lan ap pare?", fr: "Quand l'identité sera-t-elle prête ?" } },
-        { id: "valeurs_visuelles", type: "textarea", t: { ht: "Kijan ou vle moun santi yo lè yo wè sit la?", fr: "Que voulez-vous que les gens ressentent en voyant le site ?" }, h: { ht: "Nou gen valè yo deja: edikasyon, espwa, lidèchip, kreyativite, solidarite, transfòmasyon. Èske gen koulè oswa estil ou renmen oswa ou pa renmen?", fr: "Les valeurs sont posées : éducation, espoir, leadership, créativité, solidarité, transformation. Des couleurs ou styles que vous aimez, ou pas ?" } }
+        { id: "valeurs_visuelles", type: "textarea", t: { ht: "Kijan ou vle moun santi yo lè yo wè sit la?", fr: "Quelle impression le site doit-il donner ?" }, h: { ht: "Nou gen valè yo deja: edikasyon, espwa, lidèchip, kreyativite, solidarite, transfòmasyon. Èske gen koulè oswa estil ou renmen oswa ou pa renmen?", fr: "Vous avez cité l'éducation, l'espoir, le leadership, la créativité, la solidarité et la transformation sociale. Y a-t-il des couleurs ou des styles que vous aimez, ou que vous voulez éviter ?" } }
       ]
     },
     {
       id: "ecosysteme",
       t: { ht: "Asosyasyon an ak lòt estrikti LibEsans yo", fr: "L'association et les autres structures LibEsans" },
-      d: { ht: "Non LibEsans deja itilize pou plizyè estrikti. Sit la ap pale sèlman de asosyasyon an: kesyon sa yo ede vizitè a konprann li sou sit asosyasyon an, pa sou sit yon lòt estrikti.", fr: "Le nom LibEsans désigne déjà plusieurs structures. Le site ne parlera que de l'association : ces questions aident le visiteur à comprendre qu'il est chez l'association, et pas chez une autre structure." },
+      d: { ht: "Non LibEsans deja itilize pou plizyè estrikti. Sit la ap pale sèlman de asosyasyon an: kesyon sa yo ede vizitè a konprann li sou sit asosyasyon an, pa sou sit yon lòt estrikti.", fr: "Le nom LibEsans est utilisé par plusieurs structures. Le site ne présentera que l'association : ces questions servent à éviter la confusion avec les autres." },
       q: [
         { id: "eco_structures", type: "check", cols: true, t: { ht: "Ki lòt estrikti ki pote non LibEsans?", fr: "Quelles autres structures portent le nom LibEsans ?" },
           opts: [
@@ -454,7 +429,7 @@ input:focus-visible, textarea:focus-visible, select:focus-visible, button:focus-
         { id: "eco_identite", type: "radio", t: { ht: "Idantite vizyèl asosyasyon an pa rapò ak lòt estrikti yo", fr: "L'identité visuelle de l'association par rapport aux autres structures" }, h: { ht: "Grafis la bezwen repons sa a anvan l kòmanse desine.", fr: "Le graphiste a besoin de cette réponse avant de commencer à dessiner." },
           opts: [
             { v: "commune", ht: "Menm logo ak menm koulè pou tout estrikti yo", fr: "Le même logo et les mêmes couleurs pour toutes les structures" },
-            { v: "famille", ht: "Yon fanmi komen (pa egzanp monogram « LS· »), ak yon varyant pou asosyasyon an", fr: "Une famille commune (par exemple le monogramme « LS· »), avec une variante propre à l'association" },
+            { v: "famille", ht: "Yon fanmi komen (pa egzanp monogram « LS· »), ak yon varyant pou asosyasyon an", fr: "Une famille commune (par exemple le monogramme « LS· »), avec une variante propre à l'association" },
             { v: "distincte", ht: "Yon idantite apa nèt pou asosyasyon an", fr: "Une identité entièrement distincte pour l'association" },
             { v: "dk", ht: "Poko deside", fr: "Pas encore décidé" }
           ] },
@@ -462,7 +437,7 @@ input:focus-visible, textarea:focus-visible, select:focus-visible, button:focus-
           opts: [
             { v: "jamais", ht: "Non, pa ditou", fr: "Non, pas du tout" },
             { v: "pied", ht: "Yon ti lyen sèlman, an ba paj la", fr: "Un simple lien en bas de page" },
-            { v: "section", ht: "Yon ti seksyon « Fanmi LibEsans »", fr: "Une courte section « La famille LibEsans »" },
+            { v: "section", ht: "Yon ti seksyon « Fanmi LibEsans »", fr: "Une courte section « La famille LibEsans »" },
             { v: "dk", ht: "Poko deside", fr: "Pas encore décidé" }
           ] },
         { id: "eco_reseaux", type: "radio", t: { ht: "Rezo sosyal asosyasyon an", fr: "Les réseaux sociaux de l'association" },
@@ -477,7 +452,7 @@ input:focus-visible, textarea:focus-visible, select:focus-visible, button:focus-
     {
       id: "technique",
       t: { ht: "Domèn, imèl ak mizajou", fr: "Domaine, e-mail et mises à jour" },
-      d: { ht: "Ki moun ki posede sa, epi ki moun ki pral fè sit la viv apre lansman an.", fr: "Qui possède quoi, et qui fera vivre le site après le lancement." },
+      d: { ht: "Ki moun ki posede sa, epi ki moun ki pral fè sit la viv apre lansman an.", fr: "Qui possède le domaine et les adresses e-mail, et qui mettra le site à jour." },
       q: [
         { id: "domaine", type: "radio", t: { ht: "Non domèn (pa egzanp alibesans.org)", fr: "Nom de domaine (par exemple alibesans.org)" },
           opts: [
@@ -519,7 +494,7 @@ input:focus-visible, textarea:focus-visible, select:focus-visible, button:focus-
     {
       id: "calendrier",
       t: { ht: "Kalandriye", fr: "Calendrier" },
-      d: { ht: "Yon dat ki fiks chanje fason nou òganize travay la.", fr: "Une date fixe change la façon d'organiser le travail." },
+      d: { ht: "Yon dat ki fiks chanje fason nou òganize travay la.", fr: "Pour savoir si une date s'impose." },
       q: [
         { id: "date_souhaitee", type: "text", t: { ht: "Kilè nou ta renmen sit la an liy?", fr: "Quand souhaitez-vous la mise en ligne ?" } },
         { id: "date_ferme", type: "radio", t: { ht: "Èske dat sa a fiks?", fr: "Cette date est-elle impérative ?" },
@@ -539,7 +514,7 @@ input:focus-visible, textarea:focus-visible, select:focus-visible, button:focus-
     {
       id: "budget",
       t: { ht: "Bidjè", fr: "Budget" },
-      d: { ht: "Yon fouchèt ede nou pwopoze sa ki posib vre ak lajan ki disponib, olye nou pwopoze yon bagay ki twò gwo oswa twò piti.", fr: "Une fourchette nous aide à proposer ce qui est réaliste avec les moyens disponibles, plutôt qu'un projet trop grand ou trop petit." },
+      d: { ht: "Yon fouchèt ede nou pwopoze sa ki posib vre ak lajan ki disponib, olye nou pwopoze yon bagay ki twò gwo oswa twò piti.", fr: "Une fourchette suffit. Elle nous permet de proposer un projet à la mesure de vos moyens." },
       q: [
         { id: "devise", type: "radio", t: { ht: "Nan ki lajan nou prefere travay?", fr: "Dans quelle monnaie préférez-vous travailler ?" },
           opts: [
@@ -587,7 +562,7 @@ input:focus-visible, textarea:focus-visible, select:focus-visible, button:focus-
     {
       id: "autres",
       t: { ht: "Lòt bagay", fr: "Autres points" },
-      d: { ht: "Sa nou pa t mande men ou panse nou dwe konnen.", fr: "Ce que nous n'avons pas demandé mais que vous jugez utile." },
+      d: { ht: "Sa nou pa t mande men ou panse nou dwe konnen.", fr: "Ce que nous n'avons pas demandé et qui vous semble utile." },
       q: [
         { id: "inquietudes", type: "textarea", t: { ht: "Èske gen yon bagay ki enkyete nou nan pwojè sa a?", fr: "Y a-t-il quelque chose qui vous inquiète dans ce projet ?" }, h: { ht: "Yon move eksperyans ak yon lòt sit, yon kontrent, yon moun ki dwe dakò…", fr: "Une mauvaise expérience passée, une contrainte, une personne à convaincre…" } },
         { id: "questions", type: "textarea", t: { ht: "Kesyon pou nou", fr: "Vos questions pour nous" } },
@@ -597,7 +572,7 @@ input:focus-visible, textarea:focus-visible, select:focus-visible, button:focus-
   ];
 
   const STORAGE_KEY = "alibesans-kesyone-draft-v1";
-  let lang = "ht";
+  const lang = "fr";
   let answers = {};
   const DEVICE_KEY = "alibesans-kesyone-device-v1";
   let remote = false;
@@ -618,7 +593,6 @@ input:focus-visible, textarea:focus-visible, select:focus-visible, button:focus-
         const parsed = JSON.parse(raw);
         if (parsed && typeof parsed === "object") {
           answers = parsed.answers || {};
-          if (parsed.lang === "fr" || parsed.lang === "ht") lang = parsed.lang;
           if (typeof parsed.sentAt === "string") sentAt = parsed.sentAt;
         }
       }
@@ -655,8 +629,7 @@ input:focus-visible, textarea:focus-visible, select:focus-visible, button:focus-
     SECTIONS.forEach((s, i) => {
       const sec = el("section", { class: "block", id: "s-" + s.id, "aria-labelledby": "h-" + s.id });
       sec.append(el("div", { class: "block-head" },
-        el("span", { class: "block-num", text: String(i + 1) }),
-        el("h2", { id: "h-" + s.id, text: tr(s.t) }),
+        el("h2", { id: "h-" + s.id, text: (i + 1) + ". " + tr(s.t) }),
         el("p", { text: tr(s.d) })
       ));
       s.q.forEach((q) => sec.append(renderQuestion(q)));
@@ -774,8 +747,6 @@ input:focus-visible, textarea:focus-visible, select:focus-visible, button:focus-
     return s.q.some((q) => answers[q.id] !== undefined || answers[q.id + "_other"] !== undefined);
   }
   function updateProgress() {
-    const bar = $("progress");
-    bar.replaceChildren(...SECTIONS.map((s) => el("span", { class: sectionStarted(s) ? "done" : "" })));
     const a = SECTIONS.filter(sectionStarted).length;
     $("progress-label").textContent = tr(UI.progress).replace("{a}", a).replace("{b}", SECTIONS.length);
   }
@@ -889,7 +860,6 @@ input:focus-visible, textarea:focus-visible, select:focus-visible, button:focus-
   }
 
   function applyStatic() {
-    document.documentElement.lang = lang === "ht" ? "ht" : "fr";
     document.querySelectorAll("[data-t]").forEach((n) => {
       const key = n.getAttribute("data-t");
       if (n.hasAttribute("data-html")) n.innerHTML = tr(UI[key]); else n.textContent = tr(UI[key]);
@@ -897,17 +867,6 @@ input:focus-visible, textarea:focus-visible, select:focus-visible, button:focus-
     $("btn-copy").textContent = tr(UI.copy);
     $("btn-save").textContent = tr(UI.save);
     $("btn-send").textContent = tr(UI.send);
-    ["ht", "fr"].forEach((l) => $("lang-" + l).setAttribute("aria-pressed", String(l === lang)));
-  }
-
-  function setLang(l) {
-    if (l === lang) return;
-    lang = l;
-    saveLocal();
-    applyStatic();
-    renderForm();
-    updateProgress();
-    if (ownerDocs) renderOwner(ownerDocs);
   }
 
   // Vue propriétaire : liste des réponses reçues
@@ -948,7 +907,6 @@ input:focus-visible, textarea:focus-visible, select:focus-visible, button:focus-
     $("btn-send").hidden = false;
   }
 
-  document.querySelectorAll(".lang button").forEach((b) => b.addEventListener("click", () => setLang(b.dataset.lang)));
   $("btn-copy").addEventListener("click", copyAnswers);
   $("btn-save").addEventListener("click", () => saveRemote(false));
   $("btn-send").addEventListener("click", () => saveRemote(true));
