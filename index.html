@@ -160,7 +160,7 @@ input:focus-visible, textarea:focus-visible, select:focus-visible, button:focus-
     title: { ht: "Kesyonè pou prepare sit entènèt la", fr: "Questionnaire pour le site de l'Association LibEsans" },
     intro: {
       ht: "Repons ou yo ap pèmèt nou konprann pwojè a anvan nou kòmanse, wè difikilte yo davans, epi prepare yon pwopozisyon ak yon bidjè ki koresponn ak bezwen reyèl asosyasyon an. <strong>Kontè 20 a 30 minit.</strong> Pa gen move repons: si ou pa konnen, chwazi « Pa konnen » oswa kite l vid.",
-      fr: "Ces questions nous servent à préparer une proposition et un devis pour le site de l'association. Comptez 20 à 30 minutes. Si vous ne savez pas, choisissez « Je ne sais pas » ou laissez la question vide."
+      fr: "Ces questions nous servent à préparer une proposition et un devis pour le site de l'association. Comptez une quinzaine de minutes. Si vous ne savez pas, choisissez « Je ne sais pas » ou laissez la question vide."
     },
     "notice-db": {
       ht: "<b>Repons yo anrejistre otomatikman sou aparèy sa a.</b> Ou ka sispann epi kontinye pita sou menm aparèy la. Lè ou fini, klike « Voye repons yo ».",
@@ -208,365 +208,232 @@ input:focus-visible, textarea:focus-visible, select:focus-visible, button:focus-
 
   const SECTIONS = [
     {
-      id: "asso",
-      t: { ht: "Asosyasyon an ak moun kontak la", fr: "L'association et la personne contact" },
-      d: { ht: "Pou nou konnen ak ki moun n ap travay ak ki moun ki pran desizyon.", fr: "Pour savoir avec qui nous travaillons et qui décide." },
+      id: "contact",
+      t: { fr: "Personne contact" },
+      d: { fr: "La personne avec qui nous préparons le site." },
       q: [
-        { id: "nom_officiel", type: "text", t: { ht: "Non ofisyèl asosyasyon an", fr: "Nom officiel de l'association" }, ph: "Asosyasyon LibEsans (ALIBESANS)" },
-        { id: "annee_creation", type: "text", t: { ht: "Ane kreyasyon", fr: "Année de création" } },
-        { id: "statut", type: "radio", t: { ht: "Estati legal asosyasyon an", fr: "Statut légal de l'association" },
-          opts: [
-            { v: "reconnue", ht: "Rekonèt ofisyèlman (pa egzanp MAST)", fr: "Reconnue officiellement (par exemple au MAST)" },
-            { v: "en_cours", ht: "Demann lan an kou", fr: "Démarches en cours" },
-            { v: "non", ht: "Pa ankò rekonèt", fr: "Pas encore reconnue" },
-            { v: "dk", ht: "Pa konnen", fr: "Je ne sais pas" }
-          ] },
-        { id: "zone", type: "textarea", t: { ht: "Ki kote asosyasyon an aktif?", fr: "Où l'association est-elle active ?" }, h: { ht: "Komin, depatman, peyi. Èske gen manm oswa sipòtè nan dyaspora a?", fr: "Communes, départements, pays. Avez-vous des membres ou soutiens dans la diaspora ?" } },
-        { id: "contact_nom", type: "text", req: true, t: { ht: "Non moun kontak la", fr: "Nom de la personne contact" } },
-        { id: "contact_role", type: "text", t: { ht: "Fonksyon li nan asosyasyon an", fr: "Sa fonction dans l'association" } },
-        { id: "contact_tel", type: "tel", t: { ht: "Telefòn / WhatsApp", fr: "Téléphone / WhatsApp" }, ph: "+509 …" },
-        { id: "contact_email", type: "email", t: { ht: "Imèl", fr: "E-mail" } },
-        { id: "decideur", type: "radio", t: { ht: "Ki moun ki pran desizyon final sou sit la (kontni, konsepsyon, bidjè)?", fr: "Qui prend la décision finale sur le site (contenu, design, budget) ?" },
-          opts: [
-            { v: "contact", ht: "Moun kontak la menm", fr: "La personne contact elle-même" },
-            { v: "autre", ht: "Yon lòt moun", fr: "Une autre personne" },
-            { v: "comite", ht: "Yon komite oswa konsèy administrasyon", fr: "Un comité ou le conseil d'administration" }
-          ], other: true,
-          h: { ht: "Si se yon komite, konbyen tan li pran pou l reyini epi valide yon bagay?", fr: "Si c'est un comité, combien de temps lui faut-il pour se réunir et valider ?" } }
-      ]
-    },
-    {
-      id: "objectifs",
-      t: { ht: "Objektif sit la", fr: "Les objectifs du site" },
-      d: { ht: "Sa sit la dwe chanje pou asosyasyon an.", fr: "À quoi le site doit servir, et pour qui." },
-      q: [
-        { id: "objectifs", type: "check", cols: true, t: { ht: "Chwazi 3 objektif ki pi enpòtan yo", fr: "Choisissez les 3 objectifs les plus importants" }, max: 3,
-          opts: [
-            { v: "credibilite", ht: "Ranfòse kredibilite asosyasyon an", fr: "Renforcer la crédibilité de l'association" },
-            { v: "partenaires", ht: "Atire patnè ak finansman", fr: "Attirer partenaires et financements" },
-            { v: "visibilite", ht: "Fè pwojè yo pi vizib", fr: "Rendre les projets visibles" },
-            { v: "jeunes", ht: "Rive jwenn plis jèn pou pwogram yo", fr: "Toucher plus de jeunes pour les programmes" },
-            { v: "benevoles", ht: "Rekrite volontè ak mentor", fr: "Recruter bénévoles et mentors" },
-            { v: "annonces", ht: "Anonse apèl, bous ak aktivite", fr: "Annoncer appels, bourses et activités" },
-            { v: "dons", ht: "Resevwa don", fr: "Recevoir des dons" },
-            { v: "redevabilite", ht: "Montre rezilta bay bayè yo", fr: "Rendre compte des résultats aux bailleurs" }
-          ] },
-        { id: "publics", type: "check", cols: true, t: { ht: "Ki moun sit la dwe touche an premye?", fr: "Qui le site doit-il toucher en priorité ?" },
-          opts: [
-            { v: "jeunes", ht: "Jèn yo", fr: "Les jeunes" },
-            { v: "parents", ht: "Paran yo", fr: "Les parents" },
-            { v: "ecoles", ht: "Lekòl yo", fr: "Les écoles" },
-            { v: "bailleurs", ht: "Bayè ak fondasyon", fr: "Bailleurs et fondations" },
-            { v: "entreprises", ht: "Antrepriz", fr: "Entreprises" },
-            { v: "diaspora", ht: "Dyaspora a", fr: "La diaspora" },
-            { v: "autorites", ht: "Otorite ak enstitisyon", fr: "Autorités et institutions" },
-            { v: "communaute", ht: "Kominote a an jeneral", fr: "La communauté en général" }
-          ], other: true },
-        { id: "succes", type: "textarea", t: { ht: "Nan 6 mwa apre lansman an, kisa ki ta montre sit la reyisi?", fr: "Six mois après le lancement, qu'est-ce qui montrerait que le site a réussi ?" }, h: { ht: "Pa egzanp: kantite volontè ki enskri, yon patnè ki kontakte nou, kantite kandidati pou LIBESANS TALAN.", fr: "Par exemple : nombre de bénévoles inscrits, un partenaire qui nous contacte, nombre de candidatures à LIBESANS TALAN." } },
-        { id: "references", type: "textarea", t: { ht: "Sit entènèt ou renmen (lòt asosyasyon, ONG, nenpòt)", fr: "Sites que vous aimez (autres associations, ONG, autres)" }, h: { ht: "Mete adrès yo, epi di sa ou renmen ladan yo.", fr: "Indiquez les adresses et ce qui vous plaît." } },
-        { id: "anti_references", type: "textarea", t: { ht: "Sa ou pa vle wè sou sit la", fr: "Ce que vous ne voulez pas voir sur le site" } }
-      ]
-    },
-    {
-      id: "contenu",
-      t: { ht: "Kontni: tèks, foto, videyo", fr: "Le contenu : textes, photos, vidéos" },
-      d: { ht: "Se kontni an ki pi souvan retade yon sit. Nou bezwen konnen sa ki deja la.", fr: "Ce qui existe déjà, et ce qui reste à écrire, photographier ou filmer." },
-      q: [
-        { id: "langues", type: "check", t: { ht: "Nan ki lang sit la dwe ye?", fr: "Dans quelles langues le site doit-il être ?" }, h: { ht: "Chak lang anplis vle di tout tèks yo ekri e mete ajou de fwa.", fr: "Chaque langue supplémentaire signifie tous les textes écrits et mis à jour deux fois." },
-          opts: [
-            { v: "ht", ht: "Kreyòl", fr: "Créole" },
-            { v: "fr", ht: "Fransè", fr: "Français" },
-            { v: "en", ht: "Anglè", fr: "Anglais" }
-          ], other: true },
-        { id: "langue_principale", type: "radio", t: { ht: "Si se plizyè lang, ki lang ki prensipal la?", fr: "Si plusieurs langues, laquelle est principale ?" },
-          opts: [
-            { v: "ht", ht: "Kreyòl", fr: "Créole" },
-            { v: "fr", ht: "Fransè", fr: "Français" },
-            { v: "en", ht: "Anglè", fr: "Anglais" }
-          ] },
-        { id: "textes", type: "radio", t: { ht: "Tèks yo (prezantasyon, misyon, pwogram)", fr: "Les textes (présentation, mission, programmes)" },
-          opts: [
-            { v: "prets", ht: "Nou deja genyen yo", fr: "Nous les avons déjà" },
-            { v: "a_ecrire", ht: "N ap ekri yo nou menm", fr: "Nous allons les écrire nous-mêmes" },
-            { v: "aide", ht: "Nou bezwen èd pou ekri yo", fr: "Nous avons besoin d'aide pour les écrire" }
-          ] },
-        { id: "documents", type: "check", cols: true, t: { ht: "Dokiman ki egziste deja", fr: "Documents qui existent déjà" },
-          opts: [
-            { v: "plaquette", ht: "Bwochi oswa plakèt", fr: "Brochure ou plaquette" },
-            { v: "statuts", ht: "Estati asosyasyon an", fr: "Statuts de l'association" },
-            { v: "rapport", ht: "Rapò aktivite oswa rapò anyèl", fr: "Rapport d'activité ou rapport annuel" },
-            { v: "projet", ht: "Dokiman pwojè LIBESANS TALAN", fr: "Document de projet LIBESANS TALAN" },
-            { v: "presentation", ht: "Prezantasyon pou bayè", fr: "Présentation pour bailleurs" },
-            { v: "aucun", ht: "Anyen pou kounye a", fr: "Rien pour l'instant" }
-          ] },
-        { id: "nb_programmes", type: "text", t: { ht: "Konbyen pwogram oswa inisyativ sit la dwe prezante nan lansman an?", fr: "Combien de programmes ou initiatives le site doit-il présenter au lancement ?" }, h: { ht: "LIBESANS TALAN, klib lekti, fòmasyon, bous… Kilès ki aktif deja, kilès ki poko kòmanse?", fr: "LIBESANS TALAN, clubs de lecture, formations, bourses… Lesquels sont déjà actifs, lesquels pas encore ?" } },
-        { id: "photos", type: "radio", t: { ht: "Foto aktivite nou yo", fr: "Photos de vos activités" },
-          opts: [
-            { v: "beaucoup", ht: "Nou gen anpil foto bon kalite", fr: "Nous avons beaucoup de photos de bonne qualité" },
-            { v: "quelques", ht: "Nou gen kèk foto, kalite a varye", fr: "Nous avons quelques photos, de qualité variable" },
-            { v: "aucune", ht: "Nou pa gen foto", fr: "Nous n'avons pas de photos" }
-          ] },
-        { id: "videos", type: "radio", t: { ht: "Videyo", fr: "Vidéos" },
-          opts: [
-            { v: "youtube", ht: "Nou gen videyo sou YouTube oswa Facebook", fr: "Nous avons des vidéos sur YouTube ou Facebook" },
-            { v: "fichiers", ht: "Nou gen videyo men yo poko pibliye", fr: "Nous avons des vidéos non publiées" },
-            { v: "aucune", ht: "Nou pa gen videyo", fr: "Nous n'avons pas de vidéos" }
-          ] },
-        { id: "temoignages", type: "radio", t: { ht: "Temwayaj benefisyè", fr: "Témoignages de bénéficiaires" },
-          opts: [
-            { v: "accord", ht: "Nou genyen, ak dakò moun yo pou pibliye", fr: "Nous en avons, avec l'accord des personnes pour publier" },
-            { v: "sans_accord", ht: "Nou genyen, men nou poko mande dakò", fr: "Nous en avons, mais sans accord demandé" },
-            { v: "aucun", ht: "Nou poko genyen", fr: "Nous n'en avons pas encore" }
-          ] },
-        { id: "mineurs", type: "radio", t: { ht: "Foto ak non jèn ki minè: èske nou gen otorizasyon paran yo?", fr: "Photos et noms de jeunes mineurs : avez-vous l'autorisation des parents ?" }, h: { ht: "Sa enpòtan anpil: nou p ap pibliye foto oswa temwayaj yon timoun san otorizasyon paran l.", fr: "Nous ne publions aucune photo ni aucun témoignage de mineur sans l'autorisation de ses parents." },
-          opts: [
-            { v: "toutes", ht: "Wi, pou tout foto yo", fr: "Oui, pour toutes les photos" },
-            { v: "certaines", ht: "Pou kèk ladan yo", fr: "Pour certaines" },
-            { v: "non", ht: "Non", fr: "Non" },
-            { v: "inconnu", ht: "Nou pa t konnen fòk nou te genyen l", fr: "Nous ne savions pas qu'il le fallait" }
-          ] },
-        { id: "resultats", type: "textarea", t: { ht: "Rezilta ak chif nou ka pibliye", fr: "Résultats et chiffres publiables" }, h: { ht: "Pa egzanp: kantite jèn ki benefisye, kantite fòmasyon, lekòl patnè. Sèlman chif nou ka pwouve.", fr: "Par exemple : nombre de jeunes accompagnés, de formations, d'écoles partenaires. Uniquement des chiffres vérifiables." } }
+        { id: "contact_nom", type: "text", req: true, t: { fr: "Nom" } },
+        { id: "contact_role", type: "text", t: { fr: "Fonction dans l'association" } },
+        { id: "contact_tel", type: "tel", t: { fr: "Téléphone / WhatsApp" }, ph: "+509 …" },
+        { id: "contact_email", type: "email", t: { fr: "E-mail" } }
       ]
     },
     {
       id: "fonctions",
-      t: { ht: "Sa sit la dwe fè", fr: "Ce que le site doit faire" },
-      d: { ht: "Sit la ka grandi etap pa etap, dapre bidjè a. Pou chak fonksyon, di nou kilè nou bezwen l: depi lansman an, pita, oswa pa ditou.", fr: "Le site peut se construire en plusieurs fois, selon le budget. Pour chaque fonction, indiquez si vous en avez besoin dès le lancement, plus tard, ou pas du tout." },
+      t: { fr: "Ce que le site doit faire" },
+      d: { fr: "Le site peut se construire en plusieurs fois, selon le budget. Pour chaque fonction, indiquez si vous en avez besoin dès le lancement, plus tard, ou pas du tout." },
       q: [
-        { id: "fonctions_etapes", type: "phase", t: { ht: "Kilè nou bezwen chak fonksyon?", fr: "Quand avez-vous besoin de chaque fonction ?" },
-          h: { ht: "Mwens fonksyon nan lansman an, pi vit e pi bon mache sit la ka parèt. Rès la ka vini apre.", fr: "Moins il y a de fonctions au lancement, plus le site est prêt tôt et moins il coûte au départ." },
+        { id: "fonctions_etapes", type: "phase", t: { fr: "Quand avez-vous besoin de chaque fonction ?" },
+          h: { fr: "Moins il y a de fonctions au lancement, plus le site est prêt tôt et moins il coûte au départ." },
           opts: [
-            { v: "presentation", ht: "Prezantasyon: misyon, vizyon, ekip", fr: "Présentation : mission, vision, équipe" },
-            { v: "programmes", ht: "Paj pou chak pwogram", fr: "Une page par programme" },
-            { v: "actualites", ht: "Nouvèl ak anons", fr: "Actualités et annonces" },
-            { v: "agenda", ht: "Aktivite k ap vini (ajanda)", fr: "Activités à venir (agenda)" },
-            { v: "galerie", ht: "Galri foto", fr: "Galerie photos" },
-            { v: "videos", ht: "Videyo", fr: "Vidéos" },
-            { v: "temoignages", ht: "Temwayaj", fr: "Témoignages" },
-            { v: "engagement", ht: "Fòmilè volontè, mentor, patnè, sipòtè", fr: "Formulaire bénévole, mentor, partenaire, soutien" },
-            { v: "candidature", ht: "Kandidati an liy pou yon pwogram (LIBESANS TALAN)", fr: "Candidature en ligne à un programme (LIBESANS TALAN)" },
-            { v: "bourses", ht: "Demann bous oswa sibvansyon pou elèv", fr: "Demande de bourse ou subvention pour élèves" },
-            { v: "dons", ht: "Don an liy", fr: "Dons en ligne" },
-            { v: "newsletter", ht: "Bilten pa imèl", fr: "Lettre d'information par e-mail" },
-            { v: "partenaires", ht: "Paj patnè ak logo yo", fr: "Page partenaires avec leurs logos" },
-            { v: "rapports", ht: "Rapò pou telechaje", fr: "Rapports à télécharger" },
-            { v: "membres", ht: "Espas manm (ak modpas)", fr: "Espace membres (avec mot de passe)" },
-            { v: "deuxieme_langue", ht: "Sit la nan yon dezyèm lang", fr: "Le site dans une deuxième langue" }
+            { v: "presentation", fr: "Présentation : mission, vision, équipe" },
+            { v: "programmes", fr: "Une page par programme" },
+            { v: "actualites", fr: "Actualités et annonces" },
+            { v: "agenda", fr: "Activités à venir (agenda)" },
+            { v: "galerie", fr: "Galerie photos" },
+            { v: "videos", fr: "Vidéos" },
+            { v: "temoignages", fr: "Témoignages" },
+            { v: "engagement", fr: "Formulaire bénévole, mentor, partenaire, soutien" },
+            { v: "candidature", fr: "Candidature en ligne à un programme (LIBESANS TALAN)" },
+            { v: "bourses", fr: "Demande de bourse ou subvention pour élèves" },
+            { v: "dons", fr: "Dons en ligne" },
+            { v: "newsletter", fr: "Lettre d'information par e-mail" },
+            { v: "partenaires", fr: "Page partenaires avec leurs logos" },
+            { v: "rapports", fr: "Rapports à télécharger" },
+            { v: "membres", fr: "Espace membres (avec mot de passe)" },
+            { v: "deuxieme_langue", fr: "Le site dans une deuxième langue" }
           ] },
-        { id: "candidature_docs", type: "radio", t: { ht: "Si gen kandidati oswa demann bous: èske moun yo dwe voye dokiman (nòt, papye idantite, lèt)?", fr: "S'il y a candidature ou demande de bourse : les personnes doivent-elles envoyer des documents (notes, pièce d'identité, lettre) ?" }, h: { ht: "Sa mande plis sekirite, paske se done pèsonèl, souvan pou minè.", fr: "Cela demande plus de sécurité, car ce sont des données personnelles, souvent de mineurs." },
+        { id: "nb_programmes", type: "text", t: { fr: "Combien de programmes le site doit-il présenter au lancement ?" }, h: { fr: "Chaque programme a sa page." } },
+        { id: "candidature_docs", type: "radio", t: { fr: "S'il y a candidature ou demande de bourse : les personnes doivent-elles envoyer des documents (notes, pièce d'identité, lettre) ?" }, h: { fr: "Recevoir des documents personnels, souvent de mineurs, demande un stockage protégé." },
           opts: [
-            { v: "oui", ht: "Wi", fr: "Oui" },
-            { v: "non", ht: "Non, yon fòmilè senp sifi", fr: "Non, un formulaire simple suffit" },
-            { v: "hors_site", ht: "Non, kandidati yo fèt lòt kote (papye, Google Forms…)", fr: "Non, les candidatures se font ailleurs (papier, Google Forms…)" },
-            { v: "dk", ht: "Pa konnen", fr: "Je ne sais pas" }
+            { v: "oui", fr: "Oui" },
+            { v: "non", fr: "Non, un formulaire simple suffit" },
+            { v: "hors_site", fr: "Non, les candidatures se font ailleurs (papier, Google Forms…)" },
+            { v: "dk", fr: "Je ne sais pas" }
           ] },
-        { id: "fonctions_autres", type: "textarea", t: { ht: "Yon lòt fonksyon ki pa nan lis la? Di nou kilè nou ta bezwen l.", fr: "Une autre fonction absente de la liste ? Dites-nous quand il vous la faudrait." } }
+        { id: "fonctions_autres", type: "textarea", t: { fr: "Une autre fonction absente de la liste ? Dites-nous quand il vous la faudrait." } }
       ]
     },
     {
-      id: "dons",
-      t: { ht: "Don ak peman", fr: "Dons et paiements" },
-      d: { ht: "Resevwa lajan sou yon sit mande kont, verifikasyon ak tan. Pi bonè nou konnen, pi bon.", fr: "Recevoir des paiements en ligne demande d'ouvrir des comptes et de passer des vérifications, ce qui prend plusieurs semaines." },
+      id: "contenu",
+      t: { fr: "Contenu à intégrer" },
+      d: { fr: "Ce qui existe déjà, et ce qui reste à écrire, photographier ou filmer." },
       q: [
-        { id: "dons_quand", type: "radio", t: { ht: "Èske nou vle resevwa don sou sit la?", fr: "Voulez-vous recevoir des dons sur le site ?" },
+        { id: "langues", type: "check", t: { fr: "Dans quelles langues le site doit-il être ?" }, h: { fr: "Chaque langue en plus double les textes à écrire et à tenir à jour." },
           opts: [
-            { v: "lancement", ht: "Wi, depi lansman an", fr: "Oui, dès le lancement" },
-            { v: "plus_tard", ht: "Wi, men pita", fr: "Oui, mais plus tard" },
-            { v: "non", ht: "Non, yon paj « Sipòte nou » ak kontak sifi", fr: "Non, une page « Nous soutenir » avec contact suffit" }
-          ] },
-        { id: "moyens", type: "check", cols: true, t: { ht: "Ki mwayen peman ki enpòtan?", fr: "Quels moyens de paiement comptent ?" },
-          opts: [
-            { v: "moncash", ht: "MonCash", fr: "MonCash" },
-            { v: "natcash", ht: "NatCash", fr: "NatCash" },
-            { v: "carte", ht: "Kat kredi / debi", fr: "Carte bancaire" },
-            { v: "paypal", ht: "PayPal", fr: "PayPal" },
-            { v: "zelle", ht: "Zelle / Cash App (dyaspora)", fr: "Zelle / Cash App (diaspora)" },
-            { v: "virement", ht: "Transfè bankè", fr: "Virement bancaire" }
+            { v: "fr", fr: "Français" },
+            { v: "ht", fr: "Créole" },
+            { v: "en", fr: "Anglais" }
           ], other: true },
-        { id: "compte", type: "radio", t: { ht: "Èske asosyasyon an gen yon kont labank nan non li?", fr: "L'association a-t-elle un compte bancaire à son nom ?" }, opts: yn },
-        { id: "dons_recurrents", type: "radio", t: { ht: "Don chak mwa (abònman) pou sipòtè yo?", fr: "Dons mensuels (récurrents) pour les soutiens ?" }, opts: yn },
-        { id: "recus", type: "radio", t: { ht: "Èske donatè yo bezwen yon resi (pa egzanp pou enpo nan peyi kote yo ye)?", fr: "Les donateurs ont-ils besoin d'un reçu (par exemple fiscal dans leur pays) ?" }, opts: yn }
-      ]
-    },
-    {
-      id: "identite",
-      t: { ht: "Idantite vizyèl ak grafis la", fr: "Identité visuelle et graphiste" },
-      d: { ht: "Grafis patnè a ap fè branding lan. Nou bezwen konnen ki kote li ye pou sit la ka avanse an menm tan.", fr: "Où en est le graphiste, et ce qu'il va nous transmettre." },
-      q: [
-        { id: "graphiste", type: "text", t: { ht: "Non ak kontak grafis la", fr: "Nom et contact du graphiste" } },
-        { id: "logo", type: "radio", t: { ht: "Logo", fr: "Logo" },
+        { id: "textes", type: "radio", t: { fr: "Les textes (présentation, programmes)" },
           opts: [
-            { v: "final", ht: "Logo a fini e valide", fr: "Le logo est terminé et validé" },
-            { v: "en_cours", ht: "Logo a an kou", fr: "Le logo est en cours" },
-            { v: "a_faire", ht: "Poko kòmanse", fr: "Pas encore commencé" }
+            { v: "prets", fr: "Nous les avons déjà" },
+            { v: "a_ecrire", fr: "Nous allons les écrire nous-mêmes" },
+            { v: "aide", fr: "Nous avons besoin d'aide pour les écrire" }
           ] },
-        { id: "charte", type: "check", t: { ht: "Sa grafis la ap livre", fr: "Ce que le graphiste va livrer" },
+        { id: "photos", type: "radio", t: { fr: "Photos" },
           opts: [
-            { v: "logo", ht: "Logo nan plizyè fòma (koulè, blan, nwa)", fr: "Logo en plusieurs versions (couleur, blanc, noir)" },
-            { v: "couleurs", ht: "Koulè ofisyèl yo (kòd koulè)", fr: "Couleurs officielles (codes)" },
-            { v: "polices", ht: "Polis (tipografi)", fr: "Polices (typographie)" },
-            { v: "guide", ht: "Yon gid itilizasyon (charte grafik)", fr: "Une charte graphique" },
-            { v: "maquettes", ht: "Maket paj sit la", fr: "Maquettes des pages du site" },
-            { v: "dk", ht: "Pa konnen", fr: "Je ne sais pas" }
+            { v: "beaucoup", fr: "Beaucoup, de bonne qualité" },
+            { v: "quelques", fr: "Quelques-unes, de qualité variable" },
+            { v: "aucune", fr: "Aucune" }
           ] },
-        { id: "branding_date", type: "text", t: { ht: "Kilè branding lan ap pare?", fr: "Quand l'identité sera-t-elle prête ?" } },
-        { id: "valeurs_visuelles", type: "textarea", t: { ht: "Kijan ou vle moun santi yo lè yo wè sit la?", fr: "Quelle impression le site doit-il donner ?" }, h: { ht: "Nou gen valè yo deja: edikasyon, espwa, lidèchip, kreyativite, solidarite, transfòmasyon. Èske gen koulè oswa estil ou renmen oswa ou pa renmen?", fr: "Vous avez cité l'éducation, l'espoir, le leadership, la créativité, la solidarité et la transformation sociale. Y a-t-il des couleurs ou des styles que vous aimez, ou que vous voulez éviter ?" } }
-      ]
-    },
-    {
-      id: "ecosysteme",
-      t: { ht: "Asosyasyon an ak lòt estrikti LibEsans yo", fr: "L'association et les autres structures LibEsans" },
-      d: { ht: "Non LibEsans deja itilize pou plizyè estrikti. Sit la ap pale sèlman de asosyasyon an: kesyon sa yo ede vizitè a konprann li sou sit asosyasyon an, pa sou sit yon lòt estrikti.", fr: "Le nom LibEsans est utilisé par plusieurs structures. Le site ne présentera que l'association : ces questions servent à éviter la confusion avec les autres." },
-      q: [
-        { id: "eco_structures", type: "check", cols: true, t: { ht: "Ki lòt estrikti ki pote non LibEsans?", fr: "Quelles autres structures portent le nom LibEsans ?" },
+        { id: "videos", type: "radio", t: { fr: "Vidéos" },
           opts: [
-            { v: "studio", ht: "LibEsans Studio", fr: "LibEsans Studio" },
-            { v: "novae", ht: "LibEsans Novae / Novae Academy", fr: "LibEsans Novae / Novae Academy" },
-            { v: "perso", ht: "Sit pèsonèl yon fondatè oswa yon fondatris", fr: "Le site personnel d'un fondateur ou d'une fondatrice" },
-            { v: "aucune", ht: "Okenn lòt", fr: "Aucune autre" }
-          ], other: true },
-        { id: "eco_dirigeants", type: "textarea", t: { ht: "Ki moun ki dirije chak estrikti?", fr: "Qui dirige chaque structure ?" }, h: { ht: "Èske moun ki dirije asosyasyon an dirije tou Studio a oswa Novae?", fr: "La personne qui porte l'association dirige-t-elle aussi le Studio ou Novae ?" } },
-        { id: "eco_identite", type: "radio", t: { ht: "Idantite vizyèl asosyasyon an pa rapò ak lòt estrikti yo", fr: "L'identité visuelle de l'association par rapport aux autres structures" }, h: { ht: "Grafis la bezwen repons sa a anvan l kòmanse desine.", fr: "Le graphiste a besoin de cette réponse avant de commencer à dessiner." },
-          opts: [
-            { v: "commune", ht: "Menm logo ak menm koulè pou tout estrikti yo", fr: "Le même logo et les mêmes couleurs pour toutes les structures" },
-            { v: "famille", ht: "Yon fanmi komen (pa egzanp monogram « LS· »), ak yon varyant pou asosyasyon an", fr: "Une famille commune (par exemple le monogramme « LS· »), avec une variante propre à l'association" },
-            { v: "distincte", ht: "Yon idantite apa nèt pou asosyasyon an", fr: "Une identité entièrement distincte pour l'association" },
-            { v: "dk", ht: "Poko deside", fr: "Pas encore décidé" }
+            { v: "youtube", fr: "Déjà publiées sur YouTube ou Facebook" },
+            { v: "fichiers", fr: "Des fichiers, pas encore publiés" },
+            { v: "aucune", fr: "Aucune" }
           ] },
-        { id: "eco_liens", type: "radio", t: { ht: "Èske sit asosyasyon an dwe voye moun sou lòt estrikti yo?", fr: "Le site de l'association doit-il renvoyer vers les autres structures ?" },
+        { id: "mineurs", type: "radio", t: { fr: "Photos de jeunes mineurs : avez-vous l'autorisation des parents ?" }, h: { fr: "Nous ne publions aucune photo de mineur sans l'autorisation de ses parents." },
           opts: [
-            { v: "jamais", ht: "Non, pa ditou", fr: "Non, pas du tout" },
-            { v: "pied", ht: "Yon ti lyen sèlman, an ba paj la", fr: "Un simple lien en bas de page" },
-            { v: "section", ht: "Yon ti seksyon « Fanmi LibEsans »", fr: "Une courte section « La famille LibEsans »" },
-            { v: "dk", ht: "Poko deside", fr: "Pas encore décidé" }
-          ] },
-        { id: "eco_reseaux", type: "radio", t: { ht: "Rezo sosyal asosyasyon an", fr: "Les réseaux sociaux de l'association" },
-          opts: [
-            { v: "propres", ht: "Asosyasyon an gen pwòp kont li", fr: "L'association a ses propres comptes" },
-            { v: "partages", ht: "Li pataje kont yo ak Studio a oswa Novae", fr: "Elle partage les comptes du Studio ou de Novae" },
-            { v: "aucun", ht: "Li poko gen kont", fr: "Elle n'a pas encore de comptes" }
-          ] },
-        { id: "eco_sites", type: "textarea", t: { ht: "Sit entènèt ak domèn lòt estrikti yo", fr: "Sites et domaines des autres structures" }, h: { ht: "Mete adrès yo. Èske gen yon domèn komen (pa egzanp libesans.org) ki pataje ant plizyè estrikti?", fr: "Indiquez les adresses. Y a-t-il un domaine commun (par exemple libesans.org) partagé entre plusieurs structures ?" } }
-      ]
-    },
-    {
-      id: "technique",
-      t: { ht: "Domèn, imèl ak mizajou", fr: "Domaine, e-mail et mises à jour" },
-      d: { ht: "Ki moun ki posede sa, epi ki moun ki pral fè sit la viv apre lansman an.", fr: "Qui possède le domaine et les adresses e-mail, et qui mettra le site à jour." },
-      q: [
-        { id: "domaine", type: "radio", t: { ht: "Non domèn (pa egzanp alibesans.org)", fr: "Nom de domaine (par exemple alibesans.org)" },
-          opts: [
-            { v: "achete", ht: "Nou gen youn deja", fr: "Nous en avons déjà un" },
-            { v: "idee", ht: "Nou gen yon lide men nou poko achte l", fr: "Nous avons une idée mais pas encore acheté" },
-            { v: "aucun", ht: "Nou pa gen okenn", fr: "Nous n'en avons pas" }
-          ], other: true },
-        { id: "domaine_proprio", type: "text", t: { ht: "Si gen yon domèn: ki moun ki achte l, epi nan non ki moun li ye?", fr: "S'il existe : qui l'a acheté, et à quel nom est-il ?" }, h: { ht: "Domèn nan dwe nan non asosyasyon an, pa nan non yon moun sèlman.", fr: "Le domaine doit être au nom de l'association, pas d'une seule personne." } },
-        { id: "emails", type: "radio", t: { ht: "Imèl pwofesyonèl (kontak@alibesans.org…)", fr: "Adresses e-mail professionnelles (contact@alibesans.org…)" },
-          opts: [
-            { v: "oui", ht: "Wi, nou bezwen sa", fr: "Oui, nous en avons besoin" },
-            { v: "existant", ht: "Nou genyen deja", fr: "Nous en avons déjà" },
-            { v: "non", ht: "Non, Gmail sifi pou kounye a", fr: "Non, Gmail suffit pour l'instant" }
-          ] },
-        { id: "nb_emails", type: "text", t: { ht: "Si wi, konbyen bwat imèl?", fr: "Si oui, combien de boîtes ?" } },
-        { id: "site_existant", type: "text", t: { ht: "Èske gen yon sit ki egziste deja? Adrès li", fr: "Un site existe-t-il déjà ? Son adresse" } },
-        { id: "reseaux", type: "textarea", t: { ht: "Rezo sosyal asosyasyon an", fr: "Réseaux sociaux de l'association" }, h: { ht: "Facebook, Instagram, TikTok, YouTube, LinkedIn… Mete lyen yo.", fr: "Facebook, Instagram, TikTok, YouTube, LinkedIn… Indiquez les liens." } },
-        { id: "maj_qui", type: "text", t: { ht: "Ki moun ki pral mete sit la ajou apre lansman an?", fr: "Qui mettra le site à jour après le lancement ?" } },
-        { id: "maj_aisance", type: "radio", t: { ht: "Konbyen moun sa a alèz ak òdinatè?", fr: "Quelle est l'aisance de cette personne avec l'informatique ?" },
-          opts: [
-            { v: "facile", ht: "Byen alèz, li deja jere sit oswa paj Facebook", fr: "À l'aise, elle gère déjà un site ou une page Facebook" },
-            { v: "moyen", ht: "Li ka aprann ak yon fòmasyon", fr: "Elle peut apprendre avec une formation" },
-            { v: "difficile", ht: "Li pa alèz, nou ta prefere yon moun fè l pou nou", fr: "Pas à l'aise, nous préférerions déléguer" }
-          ] },
-        { id: "maj_frequence", type: "radio", t: { ht: "Konbyen fwa nou panse pibliye nouvo kontni?", fr: "À quelle fréquence pensez-vous publier ?" },
-          opts: [
-            { v: "semaine", ht: "Chak semèn", fr: "Chaque semaine" },
-            { v: "mois", ht: "Kèk fwa pa mwa", fr: "Quelques fois par mois" },
-            { v: "rare", ht: "Raman, lè gen yon evènman", fr: "Rarement, lors d'un événement" }
-          ] },
-        { id: "connexion", type: "radio", t: { ht: "Kijan ekip la konekte pi souvan?", fr: "Comment l'équipe se connecte-t-elle le plus souvent ?" },
-          opts: [
-            { v: "telephone", ht: "Sou telefòn, ak done mobil", fr: "Sur téléphone, en données mobiles" },
-            { v: "ordinateur", ht: "Sou òdinatè, ak bon entènèt", fr: "Sur ordinateur, avec une bonne connexion" },
-            { v: "mixte", ht: "Toude", fr: "Les deux" }
+            { v: "toutes", fr: "Oui, pour toutes les photos" },
+            { v: "certaines", fr: "Pour certaines" },
+            { v: "non", fr: "Non" },
+            { v: "inconnu", fr: "Nous ne savions pas qu'il le fallait" }
           ] }
       ]
     },
     {
-      id: "calendrier",
-      t: { ht: "Kalandriye", fr: "Calendrier" },
-      d: { ht: "Yon dat ki fiks chanje fason nou òganize travay la.", fr: "Pour savoir si une date s'impose." },
+      id: "dons",
+      t: { fr: "Dons et paiements" },
+      d: { fr: "Recevoir des paiements en ligne demande d'ouvrir des comptes et de passer des vérifications, ce qui prend plusieurs semaines." },
       q: [
-        { id: "date_souhaitee", type: "text", t: { ht: "Kilè nou ta renmen sit la an liy?", fr: "Quand souhaitez-vous la mise en ligne ?" } },
-        { id: "date_ferme", type: "radio", t: { ht: "Èske dat sa a fiks?", fr: "Cette date est-elle impérative ?" },
+        { id: "dons_quand", type: "radio", t: { fr: "Voulez-vous recevoir des dons sur le site ?" },
           opts: [
-            { v: "ferme", ht: "Wi, gen yon evènman oswa yon bayè k ap tann", fr: "Oui, un événement ou un bailleur attend" },
-            { v: "souple", ht: "Non, se yon swè", fr: "Non, c'est un souhait" }
+            { v: "lancement", fr: "Oui, dès le lancement" },
+            { v: "plus_tard", fr: "Oui, mais plus tard" },
+            { v: "non", fr: "Non, une page « Nous soutenir » avec un contact suffit" }
           ] },
-        { id: "evenement", type: "textarea", t: { ht: "Si dat la fiks: ki evènman?", fr: "Si la date est impérative : quel événement ?" } },
-        { id: "validation_delai", type: "radio", t: { ht: "Lè nou voye yon pwopozisyon pou valide, nan konbyen tan nou ka reponn?", fr: "Quand nous envoyons une étape à valider, sous quel délai pouvez-vous répondre ?" },
+        { id: "moyens", type: "check", cols: true, t: { fr: "Quels moyens de paiement ?" },
           opts: [
-            { v: "48h", ht: "Nan 2 jou", fr: "Sous 2 jours" },
-            { v: "semaine", ht: "Nan yon semèn", fr: "Sous une semaine" },
-            { v: "plus", ht: "Plis pase yon semèn", fr: "Plus d'une semaine" }
+            { v: "moncash", fr: "MonCash" },
+            { v: "natcash", fr: "NatCash" },
+            { v: "carte", fr: "Carte bancaire" },
+            { v: "paypal", fr: "PayPal" },
+            { v: "zelle", fr: "Zelle / Cash App (diaspora)" },
+            { v: "virement", fr: "Virement bancaire" }
+          ], other: true },
+        { id: "compte", type: "radio", t: { fr: "L'association a-t-elle un compte bancaire à son nom ?" }, h: { fr: "Les services de paiement l'exigent." }, opts: yn },
+        { id: "dons_recurrents", type: "radio", t: { fr: "Faut-il proposer des dons mensuels automatiques ?" }, opts: yn },
+        { id: "recus", type: "radio", t: { fr: "Faut-il envoyer un reçu aux donateurs ?" }, opts: yn }
+      ]
+    },
+    {
+      id: "identite",
+      t: { fr: "Fichiers du graphiste" },
+      d: { fr: "Ce que nous recevrons du graphiste pour monter le site." },
+      q: [
+        { id: "graphiste", type: "text", t: { fr: "Nom et contact du graphiste" } },
+        { id: "logo", type: "radio", t: { fr: "Logo" },
+          opts: [
+            { v: "final", fr: "Terminé et validé" },
+            { v: "en_cours", fr: "En cours" },
+            { v: "a_faire", fr: "Pas encore commencé" }
+          ] },
+        { id: "charte", type: "check", t: { fr: "Ce que le graphiste va livrer" },
+          opts: [
+            { v: "logo", fr: "Logo en plusieurs versions (couleur, blanc, noir)" },
+            { v: "couleurs", fr: "Codes des couleurs" },
+            { v: "polices", fr: "Polices" },
+            { v: "guide", fr: "Charte graphique" },
+            { v: "maquettes", fr: "Maquettes des pages du site" },
+            { v: "dk", fr: "Je ne sais pas" }
+          ] },
+        { id: "branding_date", type: "text", t: { fr: "Quand ces fichiers seront-ils prêts ?" } },
+        { id: "references", type: "textarea", t: { fr: "Des sites que vous aimez" }, h: { fr: "Indiquez les adresses et ce qui vous plaît." } }
+      ]
+    },
+    {
+      id: "technique",
+      t: { fr: "Domaine, hébergement et e-mail" },
+      d: { fr: "Ces éléments doivent être au nom de l'association." },
+      q: [
+        { id: "domaine", type: "radio", t: { fr: "Nom de domaine (par exemple alibesans.org)" },
+          opts: [
+            { v: "achete", fr: "Nous en avons déjà un" },
+            { v: "idee", fr: "Nous avons une idée, pas encore achetée" },
+            { v: "aucun", fr: "Nous n'en avons pas" }
+          ], other: true },
+        { id: "domaine_proprio", type: "text", t: { fr: "S'il existe : chez qui, et à quel nom ?" } },
+        { id: "hebergement", type: "radio", t: { fr: "Hébergement du site" },
+          opts: [
+            { v: "existant", fr: "Nous avons déjà un hébergement" },
+            { v: "a_acheter", fr: "Nous l'achèterons, avec vos conseils" },
+            { v: "dk", fr: "Je ne sais pas" }
+          ], other: true },
+        { id: "carte_en_ligne", type: "radio", t: { fr: "L'association peut-elle payer en ligne (domaine, hébergement) ?" }, h: { fr: "Carte bancaire ou PayPal, au nom de l'association de préférence." }, opts: yn },
+        { id: "emails", type: "radio", t: { fr: "Adresses e-mail au nom du domaine (contact@alibesans.org…)" },
+          opts: [
+            { v: "oui", fr: "Oui, nous en avons besoin" },
+            { v: "existant", fr: "Nous en avons déjà" },
+            { v: "non", fr: "Non, Gmail suffit pour l'instant" }
+          ] },
+        { id: "nb_emails", type: "text", t: { fr: "Si oui, combien d'adresses ?" } },
+        { id: "site_existant", type: "text", t: { fr: "Un site existe-t-il déjà ? Son adresse" } },
+        { id: "reseaux", type: "textarea", t: { fr: "Réseaux sociaux à relier au site" }, h: { fr: "Facebook, Instagram, TikTok, YouTube, LinkedIn… Indiquez les liens." } }
+      ]
+    },
+    {
+      id: "maj",
+      t: { fr: "Mises à jour" },
+      d: { fr: "Pour adapter l'outil d'édition et la formation." },
+      q: [
+        { id: "maj_qui", type: "text", t: { fr: "Qui publiera les actualités et annonces ?" } },
+        { id: "maj_aisance", type: "radio", t: { fr: "Cette personne est-elle à l'aise avec l'informatique ?" },
+          opts: [
+            { v: "facile", fr: "Oui, elle gère déjà un site ou une page Facebook" },
+            { v: "moyen", fr: "Elle peut apprendre avec une formation" },
+            { v: "difficile", fr: "Non, nous préférerions déléguer" }
+          ] },
+        { id: "maj_frequence", type: "radio", t: { fr: "À quelle fréquence pensez-vous publier ?" },
+          opts: [
+            { v: "semaine", fr: "Chaque semaine" },
+            { v: "mois", fr: "Quelques fois par mois" },
+            { v: "rare", fr: "Rarement" }
+          ] },
+        { id: "connexion", type: "radio", t: { fr: "Depuis quoi l'équipe publiera-t-elle le plus souvent ?" },
+          opts: [
+            { v: "telephone", fr: "Un téléphone, en données mobiles" },
+            { v: "ordinateur", fr: "Un ordinateur" },
+            { v: "mixte", fr: "Les deux" }
           ] }
       ]
     },
     {
       id: "budget",
-      t: { ht: "Bidjè", fr: "Budget" },
-      d: { ht: "Yon fouchèt ede nou pwopoze sa ki posib vre ak lajan ki disponib, olye nou pwopoze yon bagay ki twò gwo oswa twò piti.", fr: "Une fourchette suffit. Elle nous permet de proposer un projet à la mesure de vos moyens." },
+      t: { fr: "Délai et budget" },
+      d: { fr: "Une fourchette suffit." },
       q: [
-        { id: "devise", type: "radio", t: { ht: "Nan ki lajan nou prefere travay?", fr: "Dans quelle monnaie préférez-vous travailler ?" },
+        { id: "date_souhaitee", type: "text", t: { fr: "Quand souhaitez-vous la mise en ligne ?" } },
+        { id: "date_ferme", type: "radio", t: { fr: "Cette date est-elle impérative ?" },
           opts: [
-            { v: "usd", ht: "Dola ameriken (USD)", fr: "Dollar américain (USD)" },
-            { v: "htg", ht: "Goud (HTG)", fr: "Gourde (HTG)" },
-            { v: "cad", ht: "Dola kanadyen (CAD)", fr: "Dollar canadien (CAD)" },
-            { v: "eur", ht: "Euro (EUR)", fr: "Euro (EUR)" }
+            { v: "ferme", fr: "Oui" },
+            { v: "souple", fr: "Non" }
           ] },
-        { id: "budget_creation", type: "radio", t: { ht: "Bidjè pou kreyasyon sit la (yon sèl fwa, an USD)", fr: "Budget de création du site (une fois, en USD)" },
+        { id: "budget_creation", type: "radio", t: { fr: "Budget de création du site (une fois, en USD)" },
           opts: [
-            { v: "lt500", ht: "Mwens pase 500", fr: "Moins de 500" },
-            { v: "500_1000", ht: "500 a 1 000", fr: "500 à 1 000" },
-            { v: "1000_2000", ht: "1 000 a 2 000", fr: "1 000 à 2 000" },
-            { v: "2000_3500", ht: "2 000 a 3 500", fr: "2 000 à 3 500" },
-            { v: "gt3500", ht: "Plis pase 3 500", fr: "Plus de 3 500" },
-            { v: "inconnu", ht: "Poko fikse", fr: "Pas encore fixé" }
+            { v: "lt500", fr: "Moins de 500" },
+            { v: "500_1000", fr: "500 à 1 000" },
+            { v: "1000_2000", fr: "1 000 à 2 000" },
+            { v: "2000_3500", fr: "2 000 à 3 500" },
+            { v: "gt3500", fr: "Plus de 3 500" },
+            { v: "inconnu", fr: "Pas encore fixé" }
           ] },
-        { id: "budget_mensuel", type: "radio", t: { ht: "Bidjè chak mwa pou ebèjman ak antretyen (an USD)", fr: "Budget mensuel hébergement et maintenance (en USD)" }, h: { ht: "Yon sit bezwen ebèjman, mizajou sekirite ak sovgad, menm apre lansman.", fr: "Un site a besoin d'hébergement, de mises à jour de sécurité et de sauvegardes, même après le lancement." },
+        { id: "budget_mensuel", type: "radio", t: { fr: "Budget mensuel pour l'entretien (mises à jour, sauvegardes, en USD)" },
           opts: [
-            { v: "lt25", ht: "Mwens pase 25", fr: "Moins de 25" },
-            { v: "25_50", ht: "25 a 50", fr: "25 à 50" },
-            { v: "50_100", ht: "50 a 100", fr: "50 à 100" },
-            { v: "gt100", ht: "Plis pase 100", fr: "Plus de 100" },
-            { v: "inconnu", ht: "Poko konnen", fr: "Je ne sais pas encore" }
-          ] },
-        { id: "financement", type: "check", t: { ht: "Kote lajan an ap soti?", fr: "D'où vient le financement ?" },
-          opts: [
-            { v: "propres", ht: "Fon pwòp asosyasyon an", fr: "Fonds propres de l'association" },
-            { v: "bailleur", ht: "Yon bayè oswa sibvansyon ki prevwa sa", fr: "Un bailleur ou une subvention dédiée" },
-            { v: "partenaire", ht: "Yon patnè oswa yon antrepriz", fr: "Un partenaire ou une entreprise" },
-            { v: "collecte", ht: "Yon kolèk pami manm yo", fr: "Une collecte parmi les membres" },
-            { v: "inconnu", ht: "Poko konnen", fr: "Pas encore défini" }
-          ] },
-        { id: "bailleur_conditions", type: "textarea", t: { ht: "Si se yon bayè: èske li mande devi, fakti, rapò oswa yon dat limit?", fr: "Si c'est un bailleur : exige-t-il devis, factures, rapports ou une échéance ?" } },
-        { id: "paiement", type: "radio", t: { ht: "Kijan nou ta prefere peye?", fr: "Comment préféreriez-vous payer ?" },
-          opts: [
-            { v: "deux", ht: "Yon avans, rès la nan livrezon", fr: "Un acompte, le solde à la livraison" },
-            { v: "trois", ht: "An twa fwa, swiv etap travay yo", fr: "En trois fois, selon les étapes" },
-            { v: "mensuel", ht: "Ti kras chak mwa", fr: "Par mensualités" },
-            { v: "une", ht: "Yon sèl fwa", fr: "En une fois" }
-          ] },
-        { id: "approbation", type: "text", t: { ht: "Ki moun ki apwouve depans lan?", fr: "Qui approuve la dépense ?" } }
+            { v: "lt25", fr: "Moins de 25" },
+            { v: "25_50", fr: "25 à 50" },
+            { v: "50_100", fr: "50 à 100" },
+            { v: "gt100", fr: "Plus de 100" },
+            { v: "inconnu", fr: "Je ne sais pas encore" }
+          ] }
       ]
     },
     {
       id: "autres",
-      t: { ht: "Lòt bagay", fr: "Autres points" },
-      d: { ht: "Sa nou pa t mande men ou panse nou dwe konnen.", fr: "Ce que nous n'avons pas demandé et qui vous semble utile." },
+      t: { fr: "Autres points" },
+      d: { fr: "Ce que nous n'avons pas demandé et qui vous semble utile." },
       q: [
-        { id: "inquietudes", type: "textarea", t: { ht: "Èske gen yon bagay ki enkyete nou nan pwojè sa a?", fr: "Y a-t-il quelque chose qui vous inquiète dans ce projet ?" }, h: { ht: "Yon move eksperyans ak yon lòt sit, yon kontrent, yon moun ki dwe dakò…", fr: "Une mauvaise expérience passée, une contrainte, une personne à convaincre…" } },
-        { id: "questions", type: "textarea", t: { ht: "Kesyon pou nou", fr: "Vos questions pour nous" } },
-        { id: "libre", type: "textarea", t: { ht: "Nenpòt lòt bagay", fr: "Tout autre chose" } }
+        { id: "libre", type: "textarea", t: { fr: "Questions, précisions, contraintes" } }
       ]
     }
   ];
